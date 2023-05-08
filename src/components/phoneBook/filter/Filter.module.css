@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 6px;
+}
+
+.title {
+  margin: 0 auto;
+}
+
+.input {
+  margin: 0 auto;
+  width: 80%;
+  padding: 4px 8px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
