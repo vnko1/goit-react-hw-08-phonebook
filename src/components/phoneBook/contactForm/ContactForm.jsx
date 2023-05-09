@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import { useFetchContactsQuery, useAddContactMutation } from 'redux/index';
-import { submitSchema } from 'components/services/index';
+import { submitSchema } from 'services';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import css from './ContactForm.module.css';
 
