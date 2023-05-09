@@ -25,7 +25,7 @@ const ContactForm = () => {
 
       await addContacts({
         name: values.name.trim(),
-        phone: values.number.trim(),
+        number: values.number.trim(),
       });
       toast.success('Contact successfully added!');
       formik.resetForm();

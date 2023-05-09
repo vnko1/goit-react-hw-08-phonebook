@@ -12,7 +12,7 @@ const ContactList = ({ contacts }) => {
     () =>
       contacts.filter(
         contact =>
-          contact.phone.toLowerCase().includes(filter.toLowerCase()) ||
+          contact.number.toLowerCase().includes(filter.toLowerCase()) ||
           contact.name.toLowerCase().includes(filter.toLowerCase())
       ),
     [contacts, filter]
@@ -21,10 +21,10 @@ const ContactList = ({ contacts }) => {
   return (
     <Box sx={{ mx: 'auto', width: 600 }}>
       <ul className={css.list}>
-        {filtredContacts.map(({ id, name, phone }) => {
+        {filtredContacts.map(({ id, name, number }) => {
           return (
             <li className={css.item} key={id}>
-              <Contact name={name} phone={phone} id={id} />
+              <Contact name={name} phone={number} id={id} />
             </li>
           );
         })}

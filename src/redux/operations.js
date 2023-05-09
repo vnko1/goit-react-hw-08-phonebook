@@ -18,18 +18,40 @@ export const register = createAsyncThunk(
       setToken(response.data.token);
       return response.data;
     } catch (error) {
-      thunkApi.rejectWithValue(error.message);
+      return thunkApi.rejectWithValue(error.message);
     }
   }
 );
 
-export const logIn = createAsyncThunk('aith/logIn', async (user, thunkApi) => {
+export const logIn = createAsyncThunk('auth/logIn', async (user, thunkApi) => {
   try {
-    console.log(user);
     const response = await axios.post('/users/login', user);
     setToken(response.data.token);
     return response.data;
   } catch (error) {
-    thunkApi.rejectWithValue(error.message);
+    return thunkApi.rejectWithValue(error.message);
+  }
+});
+
+export const logOut = createAsyncThunk('auth/logOut', async (_, thunkApi) => {
+  try {
+    await axios.post('/users/logout');
+    clearToken();
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message);
+  }
+});
+
+export const refresh = createAsyncThunk('auth/refresh', async (_, thunkApi) => {
+  const token = thunkApi.getState().auth.token;
+  if (token === null) {
+    return thunkApi.rejectWithValue('Unable to refresh user');
+  }
+  try {
+    setToken(token);
+    const response = await axios('/users/current');
+    return response.data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message);
   }
 });

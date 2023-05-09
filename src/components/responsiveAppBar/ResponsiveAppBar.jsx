@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,6 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { logOut } from 'redux/operations';
 
 const pages = [
   { title: 'Home', path: '/' },
@@ -23,6 +25,7 @@ const pages = [
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
@@ -161,7 +164,13 @@ function ResponsiveAppBar() {
                 }}
               >
                 <Typography textAlign="center">ava@mail.con</Typography>
-                <Button sx={{ color: '#000000' }}>
+                <Button
+                  sx={{ color: '#000000' }}
+                  onClick={() => {
+                    console.log(1);
+                    dispatch(logOut());
+                  }}
+                >
                   <Typography
                     textAlign="center"
                     style={{ textTransform: 'capitalize' }}
