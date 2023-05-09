@@ -1,5 +1,5 @@
 const PrivateRoute = ({ component: Component }) => {
-  return <Component />;
+  return Component;
 };
 
 export default PrivateRoute;

@@ -1,22 +1,25 @@
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilter, selectFilter } from 'redux/index';
-import css from './Filter.module.css';
 
 const Filter = () => {
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   return (
-    <label className={css.container}>
-      <span className={css.title}>Find contacts by name</span>
-      <input
-        className={css.input}
-        type="text"
+    <Box sx={{ mt: 1, mb: 2, mx: 'auto', width: 400 }}>
+      <TextField
+        id="filter"
+        label="Search contacts"
+        variant="outlined"
+        sx={{ width: 1, mb: 2 }}
         name="filter"
-        onChange={({ currentTarget: { value } }) => dispatch(setFilter(value))}
+        type="text"
         value={filter}
+        onChange={({ currentTarget: { value } }) => dispatch(setFilter(value))}
       />
-    </label>
+    </Box>
   );
 };
 
