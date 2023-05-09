@@ -4,6 +4,17 @@ export const contactsApi = createApi({
   reducerPath: 'contacts',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://644fa705ba9f39c6ab68c233.mockapi.io',
+    // prepareHeaders: (headers, { getState }) => {
+
+    //   const token = getState().auth.token;
+
+    //   // If we have a token set in state, let's assume that we should be passing it.
+    //   if (token) {
+    //     headers.set('Authorization', `Bearer ${token}`);
+    //   }
+
+    //   return headers;
+    // },
   }),
   tagTypes: ['Contacts'],
   endpoints: build => ({

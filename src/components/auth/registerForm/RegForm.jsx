@@ -1,18 +1,35 @@
-import * as React from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { register } from 'redux/services';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 export default function RegForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  const onSubmit = e => {
+    e.preventDefault();
+    dispatch(register({ name, email, password }));
+    setName('');
+    setEmail('');
+    setPassword('');
+  };
+
   return (
     <Box sx={{ mt: 8, mx: 'auto', width: 400 }}>
-      <form>
+      <form onSubmit={onSubmit}>
         <TextField
           id="name"
           label="Name"
           variant="outlined"
           sx={{ width: 1, mb: 2 }}
           name="name"
+          value={name}
+          onChange={({ currentTarget: { value } }) => setName(value.trim())}
           autoComplete="name"
         />
         <TextField
@@ -23,6 +40,8 @@ export default function RegForm() {
           name="email"
           type="email"
           autoComplete="username"
+          value={email}
+          onChange={({ currentTarget: { value } }) => setEmail(value.trim())}
         />
         <TextField
           id="password"
@@ -31,6 +50,8 @@ export default function RegForm() {
           sx={{ width: 1, mb: 2 }}
           name="password"
           type="password"
+          value={password}
+          onChange={({ currentTarget: { value } }) => setPassword(value.trim())}
           autoComplete="new-password"
         />
         <Button sx={{ width: 1, color: 'black' }} type="submit">
