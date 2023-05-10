@@ -59,7 +59,6 @@ function ResponsiveAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -70,7 +69,9 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            PHONEBOOK
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              PHONEBOOK
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
