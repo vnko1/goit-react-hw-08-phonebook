@@ -31,10 +31,6 @@ export const App = () => {
             path=":contactId"
             element={<PrivateRoute component={<EditContactPage />} />}
           />
-          {/* <Route
-          path="/contacts/:contactId"
-          element={<PrivateRoute component={<EditContactPage />} />}
-        /> */}
         </Route>
         <Route
           path="/register"
