@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import css from './ModalWindow.module.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -38,6 +39,10 @@ const Modal = ({ children }) => {
     </div>,
     modalRoot
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.element.isRequired,
 };
 
 export default Modal;
