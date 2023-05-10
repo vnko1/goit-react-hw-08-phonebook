@@ -40,16 +40,12 @@ function ResponsiveAppBar() {
   const pages = () => {
     if (!isLoggedIn) {
       return [
-        { title: 'Home', path: '/' },
         { title: 'Contacts', path: '/contacts' },
         { title: 'Login', path: '/login' },
         { title: 'Register', path: '/register' },
       ];
     } else {
-      return [
-        { title: 'Home', path: '/' },
-        { title: 'Contacts', path: '/contacts' },
-      ];
+      return [{ title: 'Contacts', path: '/contacts' }];
     }
   };
 
