@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFetchContactsQuery } from 'redux/index';
 import { ContactForm, ContactList, Filter, Loader } from 'components/phoneBook';
@@ -12,7 +12,7 @@ const ContactsPage = () => {
   }, [error]);
 
   return (
-    <section>
+    <section style={{ position: 'relative' }}>
       <div
         style={{
           display: 'flex',
@@ -32,9 +32,11 @@ const ContactsPage = () => {
           </div>
         </div>
       </div>
+      <Suspense>
+        <Outlet />
+      </Suspense>
       {isLoading && <Loader />}
       <Toaster />
-      <Outlet />
     </section>
   );
 };

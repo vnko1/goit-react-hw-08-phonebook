@@ -7,7 +7,7 @@ import css from './ContactList.module.css';
 
 export const Contact = ({ name, phone, id }) => {
   const [deleteContacts, { isLoading }] = useDeleteContactMutation();
-  console.log(id);
+
   return (
     <div className={css.container}>
       <div className={css.itemContainer}>

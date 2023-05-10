@@ -26,11 +26,16 @@ export const App = () => {
         <Route
           path="/contacts"
           element={<PrivateRoute component={<ContactsPage />} />}
-        />
-        <Route
+        >
+          <Route
+            path=":contactId"
+            element={<PrivateRoute component={<EditContactPage />} />}
+          />
+          {/* <Route
           path="/contacts/:contactId"
           element={<PrivateRoute component={<EditContactPage />} />}
-        />
+        /> */}
+        </Route>
         <Route
           path="/register"
           element={<RestrictedRoute component={<RegisterPage />} />}

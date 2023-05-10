@@ -1,14 +1,18 @@
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
-import { useFetchContactsQuery, useAddContactMutation } from 'redux/index';
+import { useFetchContactsQuery, useEditContactMutation } from 'redux/index';
 import { submitSchema } from 'services';
+import { useMemo } from 'react';
+import css from './EditContact.module.css';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditContact = () => {
+  const { contactId } = useParams();
   const { data: contacts } = useFetchContactsQuery();
-  const [addContacts] = useAddContactMutation();
+  const [editContact] = useEditContactMutation();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: { name: '', number: '' },
     validationSchema: submitSchema,
@@ -23,17 +27,29 @@ const EditContact = () => {
         return;
       }
 
-      await addContacts({
+      await editContact({
         name: values.name.trim(),
         number: values.number.trim(),
+        id: contactId,
       });
       toast.success('Contact successfully edited!');
       formik.resetForm();
+      setTimeout(() => navigate('/contacts'), 500);
     },
   });
 
+  const filtredContact = useMemo(
+    () => contacts.filter(contact => contact.id === contactId),
+    [contactId, contacts]
+  );
+
   return (
-    <Box sx={{ mt: 8, mx: 'auto', width: 400 }}>
+    <div>
+      <h2 className={css.title}>Edit contact</h2>
+      <div className={css.contactContainer}>
+        <p>Name: {filtredContact[0].name}</p>
+        <p>Number: {filtredContact[0].number}</p>
+      </div>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="name"
@@ -60,10 +76,10 @@ const EditContact = () => {
           helperText={formik.touched.number && formik.errors.number}
         />
         <Button sx={{ width: 1, color: 'black' }} type="submit">
-          Add contact
+          Save
         </Button>
       </form>
-    </Box>
+    </div>
   );
 };
 

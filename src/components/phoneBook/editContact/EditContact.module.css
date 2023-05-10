@@ -1,0 +1,12 @@
+.title {
+  margin-bottom: 8px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.contactContainer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}

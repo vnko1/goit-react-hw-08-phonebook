@@ -28,11 +28,21 @@ export const contactsApi = createApi({
           : [{ type: 'Contacts', id: 'LIST' }],
     }),
     addContact: build.mutation({
-      query: contact => ({ url: 'contacts', method: 'POST', body: contact }),
+      query: contact => ({ url: '/contacts', method: 'POST', body: contact }),
+      invalidatesTags: [{ type: 'Contacts', id: 'LIST' }],
+    }),
+    editContact: build.mutation({
+      query: ({ id, name, number }) => {
+        return {
+          url: `/contacts/${id}`,
+          method: 'PATCH',
+          body: { name, number },
+        };
+      },
       invalidatesTags: [{ type: 'Contacts', id: 'LIST' }],
     }),
     deleteContact: build.mutation({
-      query: id => ({ url: `contacts/${id}`, method: 'DELETE' }),
+      query: id => ({ url: `/contacts/${id}`, method: 'DELETE' }),
       invalidatesTags: (result, error, id) => [{ type: 'Contacts', id }],
     }),
   }),
@@ -41,5 +51,6 @@ export const contactsApi = createApi({
 export const {
   useFetchContactsQuery,
   useAddContactMutation,
+  useEditContactMutation,
   useDeleteContactMutation,
 } = contactsApi;

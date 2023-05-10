@@ -1,5 +1,12 @@
+import Modal from 'components/modalWindow/ModalWindow';
+import EditContact from 'components/phoneBook/editContact/EditContact';
+
 const EditContactPage = () => {
-  return <p>edit contact</p>;
+  return (
+    <Modal>
+      <EditContact />
+    </Modal>
+  );
 };
 
 export default EditContactPage;
