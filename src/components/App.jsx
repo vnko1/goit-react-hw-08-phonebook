@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { refresh } from 'redux/operations';
 import { useUser } from 'services';
-import { Loader } from './phoneBook';
+import { ImageLoader } from './phoneBook';
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
@@ -16,17 +16,20 @@ const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
 export const App = () => {
-  const { isRefreshing, error, isLoading, token } = useUser();
+  const { isRefreshing, error, isLoading } = useUser();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token !== null) dispatch(refresh());
     if (error && !isLoading) toast.error(error);
-  }, [dispatch, error, isLoading, token]);
+  }, [error, isLoading]);
+
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
 
   return isRefreshing ? (
-    <Loader />
+    <ImageLoader />
   ) : (
     <>
       <Routes>

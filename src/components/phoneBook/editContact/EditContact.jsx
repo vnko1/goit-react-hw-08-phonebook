@@ -20,6 +20,7 @@ const EditContact = () => {
     initialValues: { name: '', number: '' },
     validationSchema: changeSchema,
     onSubmit: async values => {
+      if (values.name.trim() === '' && values.number.trim() === '') return;
       const isIncluded = contacts.some(
         contact =>
           contact.name.toLowerCase() === values.name.toLowerCase().trim()
@@ -29,7 +30,6 @@ const EditContact = () => {
         toast.error(`${values.name.trim()} is already in contacts`);
         return;
       }
-
       await editContact(
         createObj({
           name: values.name.trim(),
@@ -88,7 +88,11 @@ const EditContact = () => {
           error={formik.touched.number && Boolean(formik.errors.number)}
           helperText={formik.touched.number && formik.errors.number}
         />
-        <Button sx={{ width: 1, color: 'black' }} type="submit">
+        <Button
+          sx={{ width: 1, color: 'black' }}
+          type="submit"
+          disabled={!(formik.values.name || formik.values.number)}
+        >
           Save
         </Button>
       </form>
