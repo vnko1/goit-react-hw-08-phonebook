@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/514.0fd1a163.chunk.js","mappings":"uIAIA,UAJwB,WACtB,OAAO,uCACR,C","sources":["pages/EditContactPage.jsx"],"sourcesContent":["const EditContactPage = () => {\n  return <p>edit contact</p>;\n};\n\nexport default EditContactPage;\n"],"names":[],"sourceRoot":""}
