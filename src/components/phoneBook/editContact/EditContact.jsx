@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useFetchContactsQuery, useEditContactMutation } from 'redux/index';
-import { submitSchema } from 'services';
+import { changeSchema, createObj } from 'services';
 import { Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -18,7 +18,7 @@ const EditContact = () => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: { name: '', number: '' },
-    validationSchema: submitSchema,
+    validationSchema: changeSchema,
     onSubmit: async values => {
       const isIncluded = contacts.some(
         contact =>
@@ -30,18 +30,20 @@ const EditContact = () => {
         return;
       }
 
-      await editContact({
-        name: values.name.trim(),
-        number: values.number.trim(),
-        id: contactId,
-      });
+      await editContact(
+        createObj({
+          name: values.name.trim(),
+          number: values.number.trim(),
+          id: contactId,
+        })
+      );
       toast.success('Contact successfully edited!');
       formik.resetForm();
       setTimeout(() => navigate('/contacts'), 500);
     },
   });
 
-  const filtredContact = useMemo(() => {
+  const contact = useMemo(() => {
     if (!isLoading) return contacts.filter(contact => contact.id === contactId);
   }, [contactId, contacts, isLoading]);
 
@@ -52,16 +54,15 @@ const EditContact = () => {
         <div className={css.contactContainer}>
           <Typography sx={{ display: 'flex', mb: 1 }} variant="body1">
             <PersonIcon sx={{ mr: 2 }} />
-            {filtredContact[0].name}
+            {contact[0].name}
           </Typography>
           <Typography sx={{ display: 'flex' }} variant="body1">
             <PhoneIcon sx={{ mr: 2 }} />
-            {filtredContact[0].number}
+            {contact[0].number}
           </Typography>
-
-          {/* <Typography variant="body1">{`${filtredContact[0].name}: ${filtredContact[0].number}`}</Typography> */}
         </div>
       )}
+
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="name"
