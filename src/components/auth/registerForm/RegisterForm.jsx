@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/operations';
+import { useUser } from 'services';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function RegForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { isLoading } = useUser();
   const dispatch = useDispatch();
 
   const onSubmit = e => {
@@ -31,6 +34,7 @@ export default function RegForm() {
           value={name}
           onChange={({ currentTarget: { value } }) => setName(value.trim())}
           autoComplete="name"
+          required
         />
         <TextField
           id="email"
@@ -42,6 +46,7 @@ export default function RegForm() {
           autoComplete="username"
           value={email}
           onChange={({ currentTarget: { value } }) => setEmail(value.trim())}
+          required
         />
         <TextField
           id="password"
@@ -53,9 +58,25 @@ export default function RegForm() {
           value={password}
           onChange={({ currentTarget: { value } }) => setPassword(value.trim())}
           autoComplete="new-password"
+          required
         />
-        <Button sx={{ width: 1, color: 'black' }} type="submit">
-          Submit
+        <Button
+          sx={{ width: 1, color: 'black' }}
+          type="submit"
+          disabled={isLoading}
+        >
+          {!isLoading ? (
+            'SUBMIT'
+          ) : (
+            <ThreeDots
+              height="30"
+              width="30"
+              radius="9"
+              color="grey"
+              ariaLabel="three-dots-loading"
+              visible={true}
+            />
+          )}
         </Button>
       </form>
     </Box>

@@ -1,12 +1,13 @@
 import { lazy, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
+import { refresh } from 'redux/operations';
+import { useUser } from 'services';
+import { Loader } from './phoneBook';
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
-import { useDispatch } from 'react-redux';
-import { refresh } from 'redux/operations';
-import { useUser } from 'services';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
@@ -25,7 +26,7 @@ export const App = () => {
   }, [dispatch, error, isLoading, token]);
 
   return isRefreshing ? (
-    <p>Refreshing ...</p>
+    <Loader />
   ) : (
     <>
       <Routes>

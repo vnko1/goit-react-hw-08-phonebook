@@ -18,6 +18,10 @@ export const register = createAsyncThunk(
       setToken(response.data.token);
       return response.data;
     } catch (error) {
+      if (error.response.status === 400) {
+        return thunkApi.rejectWithValue(error.response.data.message);
+      }
+
       return thunkApi.rejectWithValue(error.message);
     }
   }
@@ -29,8 +33,9 @@ export const logIn = createAsyncThunk('auth/logIn', async (user, thunkApi) => {
     setToken(response.data.token);
     return response.data;
   } catch (error) {
-    if (error.response.status === 400)
+    if (error.response.status === 400) {
       return thunkApi.rejectWithValue('Login error');
+    }
     return thunkApi.rejectWithValue(error.message);
   }
 });

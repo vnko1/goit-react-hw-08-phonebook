@@ -1,8 +1,8 @@
 import { useEffect, Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFetchContactsQuery } from 'redux/index';
 import { ContactForm, ContactList, Filter, Loader } from 'components/phoneBook';
-import { Outlet } from 'react-router-dom';
 
 const ContactsPage = () => {
   const { data, isLoading, isError, error } = useFetchContactsQuery();
@@ -28,15 +28,22 @@ const ContactsPage = () => {
           <Filter />
         </div>
         <div>
-          <div style={{ height: '100vh', overflow: 'scroll' }}>
+          <div
+            style={{
+              height: '100vh',
+              overflow: 'scroll',
+              position: 'relative',
+            }}
+          >
             {!isLoading && !isError && <ContactList contacts={data} />}
+            {isLoading && <Loader />}
           </div>
         </div>
       </div>
       <Suspense>
         <Outlet />
       </Suspense>
-      {isLoading && <Loader />}
+
       <Toaster />
     </section>
   );

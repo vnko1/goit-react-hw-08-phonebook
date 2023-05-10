@@ -16,13 +16,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { logOut } from 'redux/operations';
 import { useUser } from 'services';
 
-const pages = [
-  { title: 'Home', path: '/' },
-  { title: 'Contacts', path: '/contacts' },
-  { title: 'Login', path: '/login' },
-  { title: 'Register', path: '/register' },
-];
-
 function ResponsiveAppBar() {
   const { isLoggedIn, user } = useUser();
 
@@ -43,6 +36,21 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const pages = () => {
+    if (!isLoggedIn) {
+      return [
+        { title: 'Home', path: '/' },
+        { title: 'Contacts', path: '/contacts' },
+        { title: 'Login', path: '/login' },
+        { title: 'Register', path: '/register' },
+      ];
+    } else {
+      return [
+        { title: 'Home', path: '/' },
+        { title: 'Contacts', path: '/contacts' },
+      ];
+    }
   };
 
   return (
@@ -95,7 +103,7 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map(({ title, path }) => (
+              {pages().map(({ title, path }) => (
                 <MenuItem key={title} onClick={handleCloseNavMenu}>
                   <Link to={path} style={{ textDecoration: 'none' }}>
                     <Typography textAlign="center">{title}</Typography>
@@ -124,7 +132,7 @@ function ResponsiveAppBar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map(({ title, path }) => (
+            {pages().map(({ title, path }) => (
               <Link key={title} to={path} style={{ textDecoration: 'none' }}>
                 <Button
                   onClick={handleCloseNavMenu}

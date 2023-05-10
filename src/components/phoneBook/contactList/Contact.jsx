@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { ThreeDots } from 'react-loader-spinner';
+
 import { useDeleteContactMutation } from 'redux/index';
 import css from './ContactList.module.css';
 import { Typography } from '@mui/material';
@@ -31,7 +31,9 @@ export const Contact = ({ name, phone, id }) => {
       <div>
         <ButtonGroup size="small" aria-label="small button group">
           <Button onClick={() => navigate(`${id}`)}>Edit contact</Button>
-          <Button onClick={() => deleteContacts(id)}>Delete contact</Button>
+          <Button onClick={() => deleteContacts(id)} disabled={isLoading}>
+            Delete contact
+          </Button>
         </ButtonGroup>
       </div>
     </div>
