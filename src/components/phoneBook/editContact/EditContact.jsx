@@ -6,6 +6,9 @@ import { useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useFetchContactsQuery, useEditContactMutation } from 'redux/index';
 import { submitSchema } from 'services';
+import { Typography } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import PhoneIcon from '@mui/icons-material/Phone';
 import css from './EditContact.module.css';
 
 const EditContact = () => {
@@ -47,8 +50,16 @@ const EditContact = () => {
       <h2 className={css.title}>Edit contact</h2>
       {!isLoading && (
         <div className={css.contactContainer}>
-          <p>Name: {filtredContact[0].name}</p>
-          <p>Number: {filtredContact[0].number}</p>
+          <Typography sx={{ display: 'flex', mb: 1 }} variant="body1">
+            <PersonIcon sx={{ mr: 2 }} />
+            {filtredContact[0].name}
+          </Typography>
+          <Typography sx={{ display: 'flex' }} variant="body1">
+            <PhoneIcon sx={{ mr: 2 }} />
+            {filtredContact[0].number}
+          </Typography>
+
+          {/* <Typography variant="body1">{`${filtredContact[0].name}: ${filtredContact[0].number}`}</Typography> */}
         </div>
       )}
       <form onSubmit={formik.handleSubmit}>
