@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { logOut } from 'redux/operations';
+import { useUser } from 'services';
 
 const pages = [
   { title: 'Home', path: '/' },
@@ -23,6 +24,8 @@ const pages = [
 ];
 
 function ResponsiveAppBar() {
+  const { isLoggedIn, user } = useUser();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const dispatch = useDispatch();
@@ -132,55 +135,56 @@ function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="A" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <div
-                style={{
-                  padding: 8,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+          {isLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user.name} src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
               >
-                <Typography textAlign="center">ava@mail.con</Typography>
-                <Button
-                  sx={{ color: '#000000' }}
-                  onClick={() => {
-                    console.log(1);
-                    dispatch(logOut());
+                <div
+                  style={{
+                    padding: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  <Typography
-                    textAlign="center"
-                    style={{ textTransform: 'capitalize' }}
+                  <Typography textAlign="center">{user.email}</Typography>
+                  <Button
+                    sx={{ color: '#000000' }}
+                    onClick={() => {
+                      dispatch(logOut());
+                    }}
                   >
-                    Log out
-                  </Typography>
-                </Button>
-              </div>
-            </Menu>
-          </Box>
+                    <Typography
+                      textAlign="center"
+                      style={{ textTransform: 'capitalize' }}
+                    >
+                      Log out
+                    </Typography>
+                  </Button>
+                </div>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

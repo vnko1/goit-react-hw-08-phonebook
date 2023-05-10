@@ -33,7 +33,7 @@ const ContactForm = () => {
   });
 
   return (
-    <Box sx={{ mt: 8, mx: 'auto', width: 400 }}>
+    <Box sx={{ mt: 1, mx: 'auto', width: 400 }}>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="name"

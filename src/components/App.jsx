@@ -1,11 +1,12 @@
 import { lazy, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
+import toast, { Toaster } from 'react-hot-toast';
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
 import { useDispatch } from 'react-redux';
 import { refresh } from 'redux/operations';
+import { useUser } from 'services';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
@@ -14,33 +15,49 @@ const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
 export const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(refresh());
-  }, [dispatch]);
+  const { isRefreshing, error, isLoading, token } = useUser();
 
-  return (
-    <Routes>
-      <Route path="/" element={<SharedLayout />}>
-        <Route index element={<HomePage />} />
-        <Route
-          path="/contacts"
-          element={<PrivateRoute component={<ContactsPage />} />}
-        >
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token !== null) dispatch(refresh());
+    if (error && !isLoading) toast.error(error);
+  }, [dispatch, error, isLoading, token]);
+
+  return isRefreshing ? (
+    <p>Refreshing ...</p>
+  ) : (
+    <>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<HomePage />} />
           <Route
-            path=":contactId"
-            element={<PrivateRoute component={<EditContactPage />} />}
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+            }
+          >
+            <Route
+              path=":contactId"
+              element={
+                <PrivateRoute
+                  redirectTo="/login"
+                  component={<EditContactPage />}
+                />
+              }
+            />
+          </Route>
+          <Route
+            path="/register"
+            element={<RestrictedRoute component={<RegisterPage />} />}
+          />
+          <Route
+            path="/login"
+            element={<RestrictedRoute component={<LogInPage />} />}
           />
         </Route>
-        <Route
-          path="/register"
-          element={<RestrictedRoute component={<RegisterPage />} />}
-        />
-        <Route
-          path="/login"
-          element={<RestrictedRoute component={<LogInPage />} />}
-        />
-      </Route>
-    </Routes>
+      </Routes>
+      <Toaster />
+    </>
   );
 };

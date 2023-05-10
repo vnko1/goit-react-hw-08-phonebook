@@ -5,6 +5,7 @@ export const selectIsRefreshing = state => state.auth.isRefreshing;
 export const selectIsLoading = state => state.auth.isLoading;
 export const selectAuthError = state => state.auth.error;
 export const selctUser = state => state.auth.user;
+export const selectToken = state => state.auth.token;
 
 // export const selectContacts = state => state.contacts.items;
 

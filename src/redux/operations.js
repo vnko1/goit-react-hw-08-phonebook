@@ -29,6 +29,8 @@ export const logIn = createAsyncThunk('auth/logIn', async (user, thunkApi) => {
     setToken(response.data.token);
     return response.data;
   } catch (error) {
+    if (error.response.status === 400)
+      return thunkApi.rejectWithValue('Login error');
     return thunkApi.rejectWithValue(error.message);
   }
 });

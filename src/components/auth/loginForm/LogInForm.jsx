@@ -4,10 +4,12 @@ import { logIn } from 'redux/operations';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+// import { useUser } from 'services';
 
 export default function LogInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const dispatch = useDispatch();
 
   const onSubmit = e => {

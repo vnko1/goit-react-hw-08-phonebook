@@ -1,16 +1,16 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useFetchContactsQuery, useEditContactMutation } from 'redux/index';
 import { submitSchema } from 'services';
-import { useMemo } from 'react';
 import css from './EditContact.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
 
 const EditContact = () => {
   const { contactId } = useParams();
-  const { data: contacts } = useFetchContactsQuery();
+  const { data: contacts, isLoading } = useFetchContactsQuery();
   const [editContact] = useEditContactMutation();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -38,18 +38,19 @@ const EditContact = () => {
     },
   });
 
-  const filtredContact = useMemo(
-    () => contacts.filter(contact => contact.id === contactId),
-    [contactId, contacts]
-  );
+  const filtredContact = useMemo(() => {
+    if (!isLoading) return contacts.filter(contact => contact.id === contactId);
+  }, [contactId, contacts, isLoading]);
 
   return (
     <div>
       <h2 className={css.title}>Edit contact</h2>
-      <div className={css.contactContainer}>
-        <p>Name: {filtredContact[0].name}</p>
-        <p>Number: {filtredContact[0].number}</p>
-      </div>
+      {!isLoading && (
+        <div className={css.contactContainer}>
+          <p>Name: {filtredContact[0].name}</p>
+          <p>Number: {filtredContact[0].number}</p>
+        </div>
+      )}
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="name"

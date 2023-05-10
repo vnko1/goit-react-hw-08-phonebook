@@ -13,6 +13,9 @@ const ContactsPage = () => {
 
   return (
     <section style={{ position: 'relative' }}>
+      <h1 style={{ marginBottom: 40, textTransform: 'uppercase' }}>
+        Your contacts
+      </h1>
       <div
         style={{
           display: 'flex',
@@ -21,12 +24,10 @@ const ContactsPage = () => {
         }}
       >
         <div>
-          <h2>Phonebook</h2>
           <ContactForm />
           <Filter />
         </div>
         <div>
-          <h2 style={{ marginBottom: 65 }}>Contacts</h2>
           <div style={{ height: '100vh', overflow: 'scroll' }}>
             {!isLoading && !isError && <ContactList contacts={data} />}
           </div>

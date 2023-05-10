@@ -5,6 +5,7 @@ import {
   selectIsLoading,
   selectAuthError,
   selctUser,
+  selectToken,
 } from 'redux/index';
 
 export const useUser = () => {
@@ -13,6 +14,7 @@ export const useUser = () => {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectAuthError);
   const user = useSelector(selctUser);
+  const token = useSelector(selectToken);
 
-  return { user, isLoggedIn, isRefreshing, isLoading, error };
+  return { user, isLoggedIn, isRefreshing, isLoading, error, token };
 };
