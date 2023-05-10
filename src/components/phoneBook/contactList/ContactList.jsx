@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { selectFilter } from 'redux/index';
 import { Contact } from './Contact';
@@ -31,6 +32,12 @@ const ContactList = ({ contacts }) => {
       </ul>
     </Box>
   );
+};
+
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired
+  ).isRequired,
 };
 
 export { ContactList };
