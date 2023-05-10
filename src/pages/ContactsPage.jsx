@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFetchContactsQuery } from 'redux/index';
 import { ContactForm, ContactList, Filter, Loader } from 'components/phoneBook';
+import { Outlet } from 'react-router-dom';
 
 const ContactsPage = () => {
   const { data, isLoading, isError, error } = useFetchContactsQuery();
@@ -33,6 +34,7 @@ const ContactsPage = () => {
       </div>
       {isLoading && <Loader />}
       <Toaster />
+      <Outlet />
     </section>
   );
 };

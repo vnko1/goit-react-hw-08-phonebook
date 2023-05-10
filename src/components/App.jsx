@@ -9,6 +9,7 @@ import { refresh } from 'redux/operations';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
+const EditContactPage = lazy(() => import('../pages/EditContactPage'));
 const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
@@ -25,6 +26,10 @@ export const App = () => {
         <Route
           path="/contacts"
           element={<PrivateRoute component={<ContactsPage />} />}
+        />
+        <Route
+          path="/contacts/:contactId"
+          element={<PrivateRoute component={<EditContactPage />} />}
         />
         <Route
           path="/register"
