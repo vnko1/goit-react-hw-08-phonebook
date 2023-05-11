@@ -1,14 +1,15 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import ResponsiveAppBar from 'components/responsiveAppBar/ResponsiveAppBar';
+
+import PhoneBookAppBar from 'components/phoneBookAppBar/PhoneBookAppBar';
 import { Container } from '@mui/material';
 import { Loader } from 'components/phoneBook';
 
 const SharedLayout = () => {
   return (
     <>
-      <ResponsiveAppBar />
-      <Container maxWidth="xl">
+      <PhoneBookAppBar />
+      <Container maxWidth="lg">
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>
