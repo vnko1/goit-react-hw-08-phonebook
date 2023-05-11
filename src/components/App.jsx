@@ -8,6 +8,7 @@ import { ImageLoader } from './phoneBook';
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
+import Error from './error/Error';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
@@ -59,6 +60,7 @@ export const App = () => {
             path="/login"
             element={<RestrictedRoute component={<LogInPage />} />}
           />
+          <Route path="*" element={<Error />} />
         </Route>
       </Routes>
       <Toaster />
