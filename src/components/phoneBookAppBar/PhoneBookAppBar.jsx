@@ -1,38 +1,48 @@
-import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logOut } from 'redux/operations';
 import { useUser } from 'services';
+import { useColorModeContext } from 'context/colorModeContext';
 import { Filter } from 'components/phoneBook';
 import AppBar from '@mui/material/AppBar';
 import {
   Box,
   Button,
   ButtonGroup,
+  IconButton,
   Toolbar,
   Typography,
   useTheme,
 } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const PhoneBookAppBar = () => {
   const { isLoggedIn, user } = useUser();
   const theme = useTheme();
   const navigation = useNavigate();
+  const { toggleColorMode } = useColorModeContext();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          <Typography
-            variant="h1"
-            noWrap
-            component="div"
-            onClick={() => navigation('/')}
-            sx={{ cursor: 'pointer', mr: theme.spacing(4) }}
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
           >
-            PHONEBOOK
-          </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              variant="h1"
+              noWrap
+              component="div"
+              onClick={() => navigation('/')}
+              sx={{ cursor: 'pointer', mr: theme.spacing(4) }}
+            >
+              PHONEBOOK
+            </Typography>
             <ButtonGroup
               variant="contained"
               aria-label="outlined primary button group small"
@@ -52,8 +62,22 @@ const PhoneBookAppBar = () => {
                 </>
               )}
             </ButtonGroup>
-            {isLoggedIn && <Filter />}
           </Box>
+          <Box sx={{ display: 'flex' }}>
+            {isLoggedIn && <Filter />}
+            <Filter />
+            <Box sx={{ ml: theme.spacing(2) }}>
+              {theme.palette.mode} mode
+              <IconButton onClick={toggleColorMode} color="inherit">
+                {theme.palette.mode === 'dark' ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton>
+            </Box>
+          </Box>
+          {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}></Box> */}
         </Toolbar>
       </AppBar>
     </Box>
