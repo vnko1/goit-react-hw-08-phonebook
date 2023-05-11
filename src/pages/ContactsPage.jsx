@@ -1,15 +1,30 @@
-import { useEffect, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFetchContactsQuery } from 'redux/index';
-import { ContactForm, ContactList, Filter, Loader } from 'components/phoneBook';
+import { ContactForm, ContactList } from 'components/phoneBook';
+import { useShowModalContext } from 'context/ContactModalContext';
+import ContactModal from 'components/modalWindow/ContactModal';
+import EditContact from 'components/phoneBook/editContact/EditContact';
 
 const ContactsPage = () => {
   const { data, isLoading, isError, error } = useFetchContactsQuery();
+  const {
+    showAddContact,
+    setShowAddContact,
+    showEditContact,
+    setShowEditContact,
+    contactId,
+  } = useShowModalContext();
 
   useEffect(() => {
     if (error) toast.error(error);
   }, [error]);
+
+  const contact = useMemo(() => {
+    if (data) {
+      return data.find(contact => contact.id === contactId);
+    }
+  }, [contactId, data]);
 
   return (
     <section style={{ position: 'relative' }}>
@@ -24,10 +39,6 @@ const ContactsPage = () => {
         }}
       >
         <div>
-          <ContactForm />
-          <Filter />
-        </div>
-        <div>
           <div
             style={{
               height: '100vh',
@@ -36,14 +47,22 @@ const ContactsPage = () => {
             }}
           >
             {!isLoading && !isError && <ContactList contacts={data} />}
-            {isLoading && <Loader />}
+            {/* {isLoading && <Loader />} */}
           </div>
         </div>
       </div>
-      <Suspense>
-        <Outlet />
-      </Suspense>
-
+      <ContactModal open={showAddContact} showModal={setShowAddContact}>
+        <ContactForm />
+      </ContactModal>
+      <ContactModal open={showEditContact} showModal={setShowEditContact}>
+        {!!contact && (
+          <EditContact
+            contactId={contact.id}
+            number={contact.number}
+            name={contact.name}
+          />
+        )}
+      </ContactModal>
       <Toaster />
     </section>
   );

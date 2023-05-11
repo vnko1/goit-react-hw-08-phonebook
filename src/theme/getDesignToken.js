@@ -9,6 +9,7 @@ export const getDesignTokens = mode => ({
           },
           secondary: {
             main: '#447cbb',
+            light: '#cfd8dc',
           },
           background: {
             default: '#b0bec5',

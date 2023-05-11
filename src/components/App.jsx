@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { refresh } from 'redux/operations';
 import { useUser } from 'services';
-import { ColorModeContext } from 'context/colorModeContext';
 import { ImageLoader } from './phoneBook';
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
@@ -12,12 +11,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getDesignTokens } from 'theme/getDesignToken';
-import { selectTheme, setTheme } from 'redux/index';
-import Error from './error/Error';
+import { selectTheme } from 'redux/index';
+import Error from 'pages/ErrorPage';
+import ShowModalProvider from 'context/ContactModalContext';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
-const EditContactPage = lazy(() => import('../pages/EditContactPage'));
 const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
@@ -34,19 +33,10 @@ export const App = () => {
     dispatch(refresh());
   }, [dispatch]);
 
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        dispatch(setTheme());
-      },
-    }),
-    [dispatch]
-  );
-
   const themeMode = useMemo(() => createTheme(getDesignTokens(theme)), [theme]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ShowModalProvider>
       <ThemeProvider theme={themeMode}>
         <CssBaseline>
           {isRefreshing ? (
@@ -64,17 +54,7 @@ export const App = () => {
                         component={<ContactsPage />}
                       />
                     }
-                  >
-                    <Route
-                      path=":contactId"
-                      element={
-                        <PrivateRoute
-                          redirectTo="/login"
-                          component={<EditContactPage />}
-                        />
-                      }
-                    />
-                  </Route>
+                  ></Route>
                   <Route
                     path="/register"
                     element={<RestrictedRoute component={<RegisterPage />} />}
@@ -91,6 +71,6 @@ export const App = () => {
           )}
         </CssBaseline>
       </ThemeProvider>
-    </ColorModeContext.Provider>
+    </ShowModalProvider>
   );
 };

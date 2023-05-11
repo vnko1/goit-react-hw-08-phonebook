@@ -5,7 +5,9 @@ import { useUser } from 'services';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { ThreeDots } from 'react-loader-spinner';
+
+import { useTheme } from '@mui/material';
+import FetchingLoader from 'components/phoneBook/loader/FetchingLoader';
 
 export default function RegForm() {
   const [name, setName] = useState('');
@@ -13,6 +15,7 @@ export default function RegForm() {
   const [password, setPassword] = useState('');
   const { isLoading } = useUser();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const onSubmit = e => {
     e.preventDefault();
@@ -33,7 +36,7 @@ export default function RegForm() {
           name="name"
           value={name}
           onChange={({ currentTarget: { value } }) => setName(value.trim())}
-          autoComplete="name"
+          autoComplete="off"
           required
         />
         <TextField
@@ -43,7 +46,7 @@ export default function RegForm() {
           sx={{ width: 1, mb: 2 }}
           name="email"
           type="email"
-          autoComplete="username"
+          autoComplete="off"
           value={email}
           onChange={({ currentTarget: { value } }) => setEmail(value.trim())}
           required
@@ -57,26 +60,15 @@ export default function RegForm() {
           type="password"
           value={password}
           onChange={({ currentTarget: { value } }) => setPassword(value.trim())}
-          autoComplete="new-password"
+          autoComplete="off"
           required
         />
         <Button
-          sx={{ width: 1, color: 'black' }}
+          sx={{ width: 1, bgcolor: theme.palette.secondary.light }}
           type="submit"
           disabled={isLoading}
         >
-          {!isLoading ? (
-            'SUBMIT'
-          ) : (
-            <ThreeDots
-              height="30"
-              width="30"
-              radius="9"
-              color="grey"
-              ariaLabel="three-dots-loading"
-              visible={true}
-            />
-          )}
+          {!isLoading ? 'SUBMIT' : <FetchingLoader />}
         </Button>
       </form>
     </Box>

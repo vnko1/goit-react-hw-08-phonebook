@@ -20,22 +20,10 @@ const Filter = () => {
         name="filter"
         value={filter}
         onChange={({ currentTarget: { value } }) => dispatch(setFilter(value))}
-        autoComplete="false"
+        autoComplete="off"
       />
     </Search>
   );
 };
 
 export { Filter };
-//  <Box sx={{ mt: 1, mb: 2, mx: 'auto', width: 400 }}>
-//    <TextField
-//      id="filter"
-//      label="Search contacts"
-//      variant="outlined"
-//      sx={{ width: 1, mb: 2 }}
-//      name="filter"
-//      type="text"
-//      value={filter}
-//      onChange={({ currentTarget: { value } }) => dispatch(setFilter(value))}
-//    />
-//  </Box>;

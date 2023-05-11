@@ -1,68 +1,62 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useFetchContactsQuery, useEditContactMutation } from 'redux/index';
+import { useShowModalContext } from 'context/ContactModalContext';
+import { useEditContactMutation } from 'redux/index';
 import { changeSchema, createObj } from 'services';
 import { Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import css from './EditContact.module.css';
 
-const EditContact = () => {
-  const { contactId } = useParams();
-  const { data: contacts, isLoading } = useFetchContactsQuery();
-  const [editContact] = useEditContactMutation();
-  const navigate = useNavigate();
+const EditContact = ({ contactId, name, number }) => {
+  const [editContact, { isSuccess, error }] = useEditContactMutation();
+  const { setShowEditContact } = useShowModalContext();
+
   const formik = useFormik({
-    initialValues: { name: '', number: '' },
+    initialValues: { name, number },
     validationSchema: changeSchema,
     onSubmit: async values => {
-      if (values.name.trim() === '' && values.number.trim() === '') return;
-      const isIncluded = contacts.some(
-        contact =>
-          contact.name.toLowerCase() === values.name.toLowerCase().trim()
-      );
-      if (isIncluded) {
-        formik.resetForm();
-        toast.error(`${values.name.trim()} is already in contacts`);
-        return;
-      }
+      if (values.name.trim() === '' || values.number.trim() === '') return;
+
+      const newName = values.name.trim();
+      const newNumber = values.number.trim();
+
       await editContact(
         createObj({
-          name: values.name.trim(),
-          number: values.number.trim(),
+          newName,
+          newNumber,
           id: contactId,
+          name,
+          number,
         })
       );
-      toast.success('Contact successfully edited!');
+
       formik.resetForm();
-      setTimeout(() => navigate('/contacts'), 500);
+      setTimeout(() => setShowEditContact(false));
     },
   });
 
-  const contact = useMemo(() => {
-    if (!isLoading) return contacts.filter(contact => contact.id === contactId);
-  }, [contactId, contacts, isLoading]);
+  useEffect(() => {
+    if (isSuccess) toast.success('Contact successfully edited!');
+    if (error) toast.error(error);
+  }, [isSuccess, error]);
 
   return (
-    <div>
+    <>
       <h2 className={css.title}>Edit contact</h2>
-      {!isLoading && (
-        <div className={css.contactContainer}>
-          <Typography sx={{ display: 'flex', mb: 1 }} variant="body1">
-            <PersonIcon sx={{ mr: 2 }} />
-            {contact[0].name}
-          </Typography>
-          <Typography sx={{ display: 'flex' }} variant="body1">
-            <PhoneIcon sx={{ mr: 2 }} />
-            {contact[0].number}
-          </Typography>
-        </div>
-      )}
-
+      <div className={css.contactContainer}>
+        <Typography sx={{ display: 'flex', mb: 1 }} variant="body1">
+          <PersonIcon sx={{ mr: 2 }} />
+          {name}
+        </Typography>
+        <Typography sx={{ display: 'flex' }} variant="body1">
+          <PhoneIcon sx={{ mr: 2 }} />
+          {number}
+        </Typography>
+      </div>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="name"
@@ -75,6 +69,7 @@ const EditContact = () => {
           onChange={formik.handleChange}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
+          autoComplete="off"
         />
         <TextField
           id="number"
@@ -87,16 +82,21 @@ const EditContact = () => {
           onChange={formik.handleChange}
           error={formik.touched.number && Boolean(formik.errors.number)}
           helperText={formik.touched.number && formik.errors.number}
+          autoComplete="off"
         />
         <Button
-          sx={{ width: 1, color: 'black' }}
+          sx={{
+            width: 1,
+            color: 'black',
+            bgcolor: theme => theme.palette.secondary.light,
+          }}
           type="submit"
           disabled={!(formik.values.name || formik.values.number)}
         >
           Save
         </Button>
       </form>
-    </div>
+    </>
   );
 };
 
