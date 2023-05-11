@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { logOut } from 'redux/operations';
 import { useUser } from 'services';
 import { useColorModeContext } from 'context/colorModeContext';
@@ -16,12 +16,14 @@ import {
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const PhoneBookAppBar = () => {
   const { isLoggedIn, user } = useUser();
   const theme = useTheme();
   const navigation = useNavigate();
   const { toggleColorMode } = useColorModeContext();
+  const dispatch = useDispatch();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -63,9 +65,31 @@ const PhoneBookAppBar = () => {
               )}
             </ButtonGroup>
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            {isLoggedIn && <Filter />}
-            <Filter />
+          {isLoggedIn && <Filter />}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: theme.spacing(1),
+              alignItems: 'center',
+            }}
+          >
+            {isLoggedIn && (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h2" component="h2">
+                  {user.email}
+                </Typography>
+                <IconButton
+                  aria-label="delete"
+                  color="secondary"
+                  sx={{ cursor: 'ponter' }}
+                  onClick={() => {
+                    dispatch(logOut());
+                  }}
+                >
+                  <LogoutIcon />
+                </IconButton>
+              </Box>
+            )}
             <Box sx={{ ml: theme.spacing(2) }}>
               {theme.palette.mode} mode
               <IconButton onClick={toggleColorMode} color="inherit">
@@ -77,7 +101,6 @@ const PhoneBookAppBar = () => {
               </IconButton>
             </Box>
           </Box>
-          {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}></Box> */}
         </Toolbar>
       </AppBar>
     </Box>

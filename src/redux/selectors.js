@@ -1,4 +1,5 @@
 export const selectFilter = state => state.filter;
+export const selectTheme = state => state.theme.theme;
 
 export const selectIsLoggedIn = state => state.auth.isLoggedIn;
 export const selectIsRefreshing = state => state.auth.isRefreshing;

@@ -13,21 +13,31 @@ import storage from 'redux-persist/lib/storage';
 import { filterReducer } from './filterSlice';
 import { contactsApi } from './contactsApi';
 import { authReducer } from './authSlice';
+import { themeReducer } from './themeSlice';
 
-const persistConfig = {
+const authPersistConfig = {
   key: 'token',
   version: 1,
   whitelist: ['token'],
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const themePersistConfig = {
+  key: 'theme',
+  version: 1,
+  whitelist: ['theme'],
+  storage,
+};
+
+const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
+const themePersistReducer = persistReducer(themePersistConfig, themeReducer);
 
 export const store = configureStore({
   reducer: {
-    auth: persistedReducer,
+    auth: authPersistedReducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
     filter: filterReducer,
+    theme: themePersistReducer,
   },
   middleware: getDefaultMiddleware => [
     ...getDefaultMiddleware({

@@ -1,6 +1,6 @@
-import { lazy, useEffect, useState, useMemo } from 'react';
+import { lazy, useEffect, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refresh } from 'redux/operations';
 import { useUser } from 'services';
 import { ColorModeContext } from 'context/colorModeContext';
@@ -12,6 +12,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getDesignTokens } from 'theme/getDesignToken';
+import { selectTheme, setTheme } from 'redux/index';
+import Error from './error/Error';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
@@ -20,8 +22,8 @@ const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
 export const App = () => {
-  const [mode, setMode] = useState('light');
   const { isRefreshing, error, isLoading } = useUser();
+  const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,23 +37,22 @@ export const App = () => {
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+        dispatch(setTheme());
       },
     }),
-    []
+    [dispatch]
   );
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const themeMode = useMemo(() => createTheme(getDesignTokens(theme)), [theme]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themeMode}>
         <CssBaseline>
           {isRefreshing ? (
             <ImageLoader />
           ) : (
             <>
-              {' '}
               <Routes>
                 <Route path="/" element={<SharedLayout />}>
                   <Route index element={<HomePage />} />
@@ -82,6 +83,7 @@ export const App = () => {
                     path="/login"
                     element={<RestrictedRoute component={<LogInPage />} />}
                   />
+                  <Route path="*" element={<Error />} />
                 </Route>
               </Routes>
               <Toaster />
