@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { refresh } from 'redux/operations';
 import { useUser } from 'services';
-import { ImageLoader } from './phoneBook';
+
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
@@ -14,6 +14,7 @@ import { getDesignTokens } from 'theme/getDesignToken';
 import { selectTheme } from 'redux/index';
 import Error from 'pages/ErrorPage';
 import ShowModalProvider from 'context/ContactModalContext';
+import SimpleBackdrop from './phoneBook/loader/SimpleBackdropLoader';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
@@ -40,7 +41,7 @@ export const App = () => {
       <ThemeProvider theme={themeMode}>
         <CssBaseline>
           {isRefreshing ? (
-            <ImageLoader />
+            <SimpleBackdrop isLoading={isRefreshing} />
           ) : (
             <>
               <Routes>
@@ -66,7 +67,7 @@ export const App = () => {
                   <Route path="*" element={<Error />} />
                 </Route>
               </Routes>
-              <Toaster />
+              <Toaster position="bottom-right" reverseOrder={true} />
             </>
           )}
         </CssBaseline>

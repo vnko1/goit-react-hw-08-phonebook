@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material';
 import FetchingLoader from 'components/phoneBook/loader/FetchingLoader';
 
-export default function RegForm() {
+const RegisterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -73,4 +73,6 @@ export default function RegForm() {
       </form>
     </Box>
   );
-}
+};
+
+export default RegisterForm;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -10,9 +11,10 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  borderRadius: 2,
   boxShadow: 24,
   p: 4,
+  outline: 0,
 };
 
 const ContactModal = ({ showModal, open, children }) => {
@@ -38,4 +40,9 @@ const ContactModal = ({ showModal, open, children }) => {
   );
 };
 
+ContactModal.propTypes = {
+  showModal: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+};
 export default ContactModal;

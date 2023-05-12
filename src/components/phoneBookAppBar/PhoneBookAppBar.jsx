@@ -18,8 +18,7 @@ import {
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import LogoutIcon from '@mui/icons-material/Logout';
-
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useShowModalContext } from 'context/ContactModalContext';
 
 const PhoneBookAppBar = () => {
@@ -52,9 +51,10 @@ const PhoneBookAppBar = () => {
               PHONEBOOK
             </Typography>
             <ButtonGroup
-              variant="contained"
-              aria-label="outlined primary button group small"
+              variant="text"
+              aria-label="outlined button group"
               size="small"
+              color="secondary"
             >
               <Button onClick={() => navigation('/')}>Home</Button>
               {isLoggedIn ? (
@@ -79,7 +79,7 @@ const PhoneBookAppBar = () => {
                   size="large"
                   onClick={() => setShowAddContact(true)}
                 >
-                  <AddBoxIcon fontSize="inherit" color="secondary" />
+                  <AddCircleIcon fontSize="inherit" color="secondary" />
                 </IconButton>
               </Tooltip>
               <Filter />

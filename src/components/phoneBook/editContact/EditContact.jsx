@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
@@ -98,6 +99,12 @@ const EditContact = ({ contactId, name, number }) => {
       </form>
     </>
   );
+};
+
+EditContact.propTypes = {
+  contactId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
 };
 
 export default EditContact;

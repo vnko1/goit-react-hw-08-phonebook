@@ -3,14 +3,13 @@ import { Outlet } from 'react-router-dom';
 
 import PhoneBookAppBar from 'components/phoneBookAppBar/PhoneBookAppBar';
 import { Container } from '@mui/material';
-import { Loader } from 'components/phoneBook';
-
+import SimpleBackdrop from 'components/phoneBook/loader/SimpleBackdropLoader';
 const SharedLayout = () => {
   return (
     <>
       <PhoneBookAppBar />
       <Container maxWidth="sm">
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<SimpleBackdrop isLoading={true} />}>
           <Outlet />
         </Suspense>
       </Container>

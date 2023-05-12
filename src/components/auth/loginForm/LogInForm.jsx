@@ -8,7 +8,7 @@ import { useUser } from 'services';
 import { useTheme } from '@mui/material';
 import FetchingLoader from 'components/phoneBook/loader/FetchingLoader';
 
-export default function LogInForm() {
+const LogInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { isLoading } = useUser();
@@ -60,4 +60,6 @@ export default function LogInForm() {
       </form>
     </Box>
   );
-}
+};
+
+export default LogInForm;

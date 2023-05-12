@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useFetchContactsQuery } from 'redux/index';
 import { ContactForm, ContactList } from 'components/phoneBook';
 import { useShowModalContext } from 'context/ContactModalContext';
 import ContactModal from 'components/modalWindow/ContactModal';
 import EditContact from 'components/phoneBook/editContact/EditContact';
 import { Box, Paper } from '@mui/material';
+import SimpleBackdrop from 'components/phoneBook/loader/SimpleBackdropLoader';
 
 const ContactsPage = () => {
   const { data, isLoading, isError, error } = useFetchContactsQuery();
@@ -48,9 +49,8 @@ const ContactsPage = () => {
             />
           )}
         </ContactModal>
-        <Toaster />
       </Paper>
-      {/* {isLoading && <Loader />} */}
+      <SimpleBackdrop isLoading={isLoading} />
     </Box>
   );
 };

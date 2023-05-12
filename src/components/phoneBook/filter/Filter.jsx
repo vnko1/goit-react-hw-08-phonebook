@@ -1,5 +1,3 @@
-// import Box from '@mui/material/Box';
-// import TextField from '@mui/material/TextField';
 import { Search, StyledInputBase, SearchIconWrapper } from './Filter.styled';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector, useDispatch } from 'react-redux';
