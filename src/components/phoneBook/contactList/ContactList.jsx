@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { selectFilter } from 'redux/index';
 import { Contact } from './Contact';
-import css from './ContactList.module.css';
+import { Collapse, List, Typography } from '@mui/material';
+import { TransitionGroup } from 'react-transition-group';
 
 const ContactList = ({ contacts }) => {
   const filter = useSelector(selectFilter);
@@ -20,16 +21,25 @@ const ContactList = ({ contacts }) => {
   );
 
   return (
-    <Box sx={{ mx: 'auto', width: 600 }}>
-      <ul className={css.list}>
-        {filtredContacts.map(({ id, name, number }) => {
-          return (
-            <li className={css.item} key={id}>
-              <Contact name={name} phone={number} id={id} />
-            </li>
-          );
-        })}
-      </ul>
+    <Box>
+      {filtredContacts.length === 0 ? (
+        <Typography variant="h2">Add your first contact</Typography>
+      ) : (
+        <Typography variant="h2" sx={{ mb: theme => theme.spacing(3) }}>
+          Your contacts
+        </Typography>
+      )}
+      <List>
+        <TransitionGroup>
+          {filtredContacts.map(({ id, name, number }) => {
+            return (
+              <Collapse key={id}>
+                <Contact name={name} phone={number} id={id} />
+              </Collapse>
+            );
+          })}
+        </TransitionGroup>
+      </List>
     </Box>
   );
 };

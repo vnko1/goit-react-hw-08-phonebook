@@ -4,15 +4,16 @@ import { logIn } from 'redux/operations';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { ThreeDots } from 'react-loader-spinner';
 import { useUser } from 'services';
+import { useTheme } from '@mui/material';
+import FetchingLoader from 'components/phoneBook/loader/FetchingLoader';
 
-export default function LogInForm() {
+const LogInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { isLoading } = useUser();
   const dispatch = useDispatch();
-  //
+  const theme = useTheme();
 
   const onSubmit = e => {
     e.preventDefault();
@@ -31,9 +32,9 @@ export default function LogInForm() {
           sx={{ width: 1, mb: 2 }}
           name="email"
           type="email"
-          autoComplete="username"
           value={email}
           onChange={({ currentTarget: { value } }) => setEmail(value.trim())}
+          autoComplete="off"
           required
         />
         <TextField
@@ -45,28 +46,20 @@ export default function LogInForm() {
           type="password"
           value={password}
           onChange={({ currentTarget: { value } }) => setPassword(value.trim())}
-          autoComplete="new-password"
+          autoComplete="off"
           required
         />
         <Button
-          sx={{ width: 1, color: 'black' }}
+          sx={{ width: 1, bgcolor: theme.palette.secondary.light }}
           type="submit"
           disabled={isLoading}
+          color="secondary"
         >
-          {!isLoading ? (
-            'SUBMIT'
-          ) : (
-            <ThreeDots
-              height="30"
-              width="30"
-              radius="9"
-              color="grey"
-              ariaLabel="three-dots-loading"
-              visible={true}
-            />
-          )}
+          {!isLoading ? 'SUBMIT' : <FetchingLoader />}
         </Button>
       </form>
     </Box>
   );
-}
+};
+
+export default LogInForm;

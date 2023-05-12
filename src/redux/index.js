@@ -5,6 +5,7 @@ export {
   useEditContactMutation,
   useDeleteContactMutation,
 } from './contactsApi';
-export { setFilter, filterReducer } from './filterSlice';
+export { setFilter } from './filterSlice';
+export { setTheme } from './themeSlice';
 
 export * from './selectors';

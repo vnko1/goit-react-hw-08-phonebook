@@ -1,22 +1,30 @@
+import { Box, Paper, Typography } from '@mui/material';
+import { useFetchContactsQuery } from 'redux/index';
 import { useUser } from 'services';
 
 const HomePage = () => {
+  const { data, isSuccess } = useFetchContactsQuery();
   const {
     isLoggedIn,
     user: { name },
   } = useUser();
 
   return (
-    <>
-      <h1
-        style={{ marginTop: 100, marginBottom: 20, textTransform: 'uppercase' }}
-      >
-        WELCOME{isLoggedIn ? `, ${name}` : ''}!
-      </h1>
-      {!isLoggedIn && (
-        <p style={{ textAlign: 'center' }}>Please sign in to continue </p>
-      )}
-    </>
+    <Box sx={{ pt: theme => theme.spacing(2) }}>
+      <Paper sx={{ minHeight: 200, pt: 10 }}>
+        <Typography variant="h1" sx={{ textTransform: 'uppercase' }}>
+          WELCOME{isLoggedIn ? `, ${name}` : ''}!
+        </Typography>
+        {!isLoggedIn && (
+          <Typography variant="h1">Please sign in to continue</Typography>
+        )}
+        {isLoggedIn && isSuccess && (
+          <Typography variant="h1">
+            You have {data.length} contacts in your phonebook
+          </Typography>
+        )}
+      </Paper>
+    </Box>
   );
 };
 

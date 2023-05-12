@@ -1,7 +1,7 @@
-export const createObj = ({ id, name, number }) => {
+export const createObj = ({ id, name, number, newName, newNumber }) => {
   const obj = {};
   obj.id = id;
-  if (name) obj.name = name;
-  if (number) obj.number = number;
+  if (name !== newName && newName) obj.name = newName;
+  if (number !== newNumber && newNumber) obj.number = newNumber;
   return obj;
 };

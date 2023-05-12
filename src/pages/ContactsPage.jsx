@@ -1,51 +1,57 @@
-import { useEffect, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import { useEffect, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import { useFetchContactsQuery } from 'redux/index';
-import { ContactForm, ContactList, Filter, Loader } from 'components/phoneBook';
+import { ContactForm, ContactList } from 'components/phoneBook';
+import { useShowModalContext } from 'context/ContactModalContext';
+import ContactModal from 'components/modalWindow/ContactModal';
+import EditContact from 'components/phoneBook/editContact/EditContact';
+import { Box, Paper } from '@mui/material';
+import SimpleBackdrop from 'components/phoneBook/loader/SimpleBackdropLoader';
 
 const ContactsPage = () => {
   const { data, isLoading, isError, error } = useFetchContactsQuery();
 
+  const {
+    showAddContact,
+    setShowAddContact,
+    showEditContact,
+    setShowEditContact,
+    contactId,
+  } = useShowModalContext();
+
   useEffect(() => {
-    if (error) toast.error(error);
-  }, [error]);
+    if (isError && error?.originalStatus === 404) {
+      toast.error('Something wrong! Try to reload your');
+      return;
+    }
+    if (isError) toast.error(error);
+  }, [error, isError]);
+
+  const contact = useMemo(() => {
+    if (data) {
+      return data.find(contact => contact.id === contactId);
+    }
+  }, [contactId, data]);
 
   return (
-    <section style={{ position: 'relative' }}>
-      <h1 style={{ marginBottom: 40, textTransform: 'uppercase' }}>
-        Your contacts
-      </h1>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          paddingBottom: 20,
-        }}
-      >
-        <div>
+    <Box sx={{ pt: theme => theme.spacing(2) }}>
+      <Paper elevation={5} sx={{ p: theme => theme.spacing(4) }}>
+        {!isLoading && <ContactList contacts={data} />}
+        <ContactModal open={showAddContact} showModal={setShowAddContact}>
           <ContactForm />
-          <Filter />
-        </div>
-        <div>
-          <div
-            style={{
-              height: '100vh',
-              overflow: 'scroll',
-              position: 'relative',
-            }}
-          >
-            {!isLoading && !isError && <ContactList contacts={data} />}
-            {isLoading && <Loader />}
-          </div>
-        </div>
-      </div>
-      <Suspense>
-        <Outlet />
-      </Suspense>
-
-      <Toaster />
-    </section>
+        </ContactModal>
+        <ContactModal open={showEditContact} showModal={setShowEditContact}>
+          {!!contact && (
+            <EditContact
+              contactId={contact.id}
+              number={contact.number}
+              name={contact.name}
+            />
+          )}
+        </ContactModal>
+      </Paper>
+      <SimpleBackdrop isLoading={isLoading} />
+    </Box>
   );
 };
 

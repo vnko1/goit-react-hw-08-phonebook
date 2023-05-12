@@ -1,24 +1,29 @@
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { refresh } from 'redux/operations';
 import { useUser } from 'services';
-import { ImageLoader } from './phoneBook';
+
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
-import Error from './error/Error';
+import toast, { Toaster } from 'react-hot-toast';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { getDesignTokens } from 'theme/getDesignToken';
+import { selectTheme } from 'redux/index';
+import ErrorPage from 'pages/ErrorPage';
+import ShowModalProvider from 'context/ContactModalContext';
+import SimpleBackdrop from './phoneBook/loader/SimpleBackdropLoader';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
-const EditContactPage = lazy(() => import('../pages/EditContactPage'));
 const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
 export const App = () => {
   const { isRefreshing, error, isLoading } = useUser();
-
+  const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,41 +34,44 @@ export const App = () => {
     dispatch(refresh());
   }, [dispatch]);
 
-  return isRefreshing ? (
-    <ImageLoader />
-  ) : (
-    <>
-      <Routes>
-        <Route path="/" element={<SharedLayout />}>
-          <Route index element={<HomePage />} />
-          <Route
-            path="/contacts"
-            element={
-              <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
-            }
-          >
-            <Route
-              path=":contactId"
-              element={
-                <PrivateRoute
-                  redirectTo="/login"
-                  component={<EditContactPage />}
-                />
-              }
-            />
-          </Route>
-          <Route
-            path="/register"
-            element={<RestrictedRoute component={<RegisterPage />} />}
-          />
-          <Route
-            path="/login"
-            element={<RestrictedRoute component={<LogInPage />} />}
-          />
-          <Route path="*" element={<Error />} />
-        </Route>
-      </Routes>
-      <Toaster />
-    </>
+  const themeMode = useMemo(() => createTheme(getDesignTokens(theme)), [theme]);
+
+  return (
+    <ShowModalProvider>
+      <ThemeProvider theme={themeMode}>
+        <CssBaseline>
+          {isRefreshing ? (
+            <SimpleBackdrop isLoading={isRefreshing} />
+          ) : (
+            <>
+              <Routes>
+                <Route path="/" element={<SharedLayout />}>
+                  <Route index element={<HomePage />} />
+                  <Route
+                    path="/contacts"
+                    element={
+                      <PrivateRoute
+                        redirectTo="/login"
+                        component={<ContactsPage />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/register"
+                    element={<RestrictedRoute component={<RegisterPage />} />}
+                  />
+                  <Route
+                    path="/login"
+                    element={<RestrictedRoute component={<LogInPage />} />}
+                  />
+                  <Route path="*" element={<ErrorPage />} />
+                </Route>
+              </Routes>
+              <Toaster position="bottom-right" reverseOrder={true} />
+            </>
+          )}
+        </CssBaseline>
+      </ThemeProvider>
+    </ShowModalProvider>
   );
 };
