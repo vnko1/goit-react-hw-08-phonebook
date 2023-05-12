@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { register } from 'redux/operations';
 import { useUser } from 'services';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 
-import { useTheme } from '@mui/material';
+import Button from '@mui/material/Button';
+import InputAdornment from '@mui/material/InputAdornment';
+import { IconButton, Input, useTheme } from '@mui/material';
 import FetchingLoader from 'components/phoneBook/loader/FetchingLoader';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const RegisterForm = () => {
   const [name, setName] = useState('');
@@ -16,6 +18,7 @@ const RegisterForm = () => {
   const { isLoading } = useUser();
   const dispatch = useDispatch();
   const theme = useTheme();
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -28,9 +31,9 @@ const RegisterForm = () => {
   return (
     <Box sx={{ mt: 8, mx: 'auto', width: 400 }}>
       <form onSubmit={onSubmit}>
-        <TextField
+        <Input
           id="name"
-          label="Name"
+          placeholder="Name"
           variant="outlined"
           sx={{ width: 1, mb: 2 }}
           name="name"
@@ -39,29 +42,39 @@ const RegisterForm = () => {
           autoComplete="off"
           required
         />
-        <TextField
+        <Input
           id="email"
-          label="Email"
+          placeholder="Email"
           variant="outlined"
           sx={{ width: 1, mb: 2 }}
           name="email"
           type="email"
-          autoComplete="off"
           value={email}
           onChange={({ currentTarget: { value } }) => setEmail(value.trim())}
+          autoComplete="off"
           required
         />
-        <TextField
+        <Input
           id="password"
-          label="Password"
+          placeholder="Password"
           variant="outlined"
           sx={{ width: 1, mb: 2 }}
           name="password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={({ currentTarget: { value } }) => setPassword(value.trim())}
           autoComplete="off"
           required
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setShowPassword(state => !state)}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </IconButton>
+            </InputAdornment>
+          }
         />
         <Button
           sx={{ width: 1, bgcolor: theme.palette.secondary.light }}
