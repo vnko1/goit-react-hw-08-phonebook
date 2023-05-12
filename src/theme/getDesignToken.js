@@ -52,6 +52,7 @@ export const getDesignTokens = mode => ({
     h2: {
       fontSize: 17,
       fontWeight: 700,
+      textTransform: 'uppercase',
     },
   },
   spacing: 8,

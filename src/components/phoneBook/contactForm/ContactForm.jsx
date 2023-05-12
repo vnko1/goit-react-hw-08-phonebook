@@ -7,11 +7,13 @@ import { submitSchema } from 'services';
 import { useTheme } from '@emotion/react';
 import FetchingLoader from '../loader/FetchingLoader';
 import { useEffect } from 'react';
+import { useShowModalContext } from 'context/ContactModalContext';
 
 const ContactForm = () => {
   const { data: contacts } = useFetchContactsQuery();
   const [addContacts, { isLoading, isSuccess }] = useAddContactMutation();
   const theme = useTheme();
+  const { setShowAddContact } = useShowModalContext();
 
   const formik = useFormik({
     initialValues: { name: '', number: '' },
@@ -31,7 +33,7 @@ const ContactForm = () => {
         name: values.name.trim(),
         number: values.number.trim(),
       });
-
+      setShowAddContact(false);
       formik.resetForm();
     },
   });

@@ -91,9 +91,7 @@ const PhoneBookAppBar = () => {
           >
             {isLoggedIn && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h2" component="h2">
-                  {user.email}
-                </Typography>
+                <Typography component="p">{user.email}</Typography>
                 <IconButton
                   aria-label="delete"
                   color="secondary"

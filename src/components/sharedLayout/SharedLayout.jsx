@@ -9,7 +9,7 @@ const SharedLayout = () => {
   return (
     <>
       <PhoneBookAppBar />
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>

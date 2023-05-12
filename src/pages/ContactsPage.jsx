@@ -5,9 +5,11 @@ import { ContactForm, ContactList } from 'components/phoneBook';
 import { useShowModalContext } from 'context/ContactModalContext';
 import ContactModal from 'components/modalWindow/ContactModal';
 import EditContact from 'components/phoneBook/editContact/EditContact';
+import { Box, Paper } from '@mui/material';
 
 const ContactsPage = () => {
   const { data, isLoading, isError, error } = useFetchContactsQuery();
+
   const {
     showAddContact,
     setShowAddContact,
@@ -31,44 +33,25 @@ const ContactsPage = () => {
   }, [contactId, data]);
 
   return (
-    <section style={{ position: 'relative' }}>
-      <h1 style={{ marginBottom: 40, textTransform: 'uppercase' }}>
-        Your contacts
-      </h1>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          paddingBottom: 20,
-        }}
-      >
-        <div>
-          <div
-            style={{
-              height: '100vh',
-              overflow: 'scroll',
-              position: 'relative',
-            }}
-          >
-            {!isLoading && !isError && <ContactList contacts={data} />}
-            {/* {isLoading && <Loader />} */}
-          </div>
-        </div>
-      </div>
-      <ContactModal open={showAddContact} showModal={setShowAddContact}>
-        <ContactForm />
-      </ContactModal>
-      <ContactModal open={showEditContact} showModal={setShowEditContact}>
-        {!!contact && (
-          <EditContact
-            contactId={contact.id}
-            number={contact.number}
-            name={contact.name}
-          />
-        )}
-      </ContactModal>
-      <Toaster />
-    </section>
+    <Box sx={{ pt: theme => theme.spacing(2) }}>
+      <Paper elevation={5} sx={{ p: theme => theme.spacing(4) }}>
+        {!isLoading && <ContactList contacts={data} />}
+        <ContactModal open={showAddContact} showModal={setShowAddContact}>
+          <ContactForm />
+        </ContactModal>
+        <ContactModal open={showEditContact} showModal={setShowEditContact}>
+          {!!contact && (
+            <EditContact
+              contactId={contact.id}
+              number={contact.number}
+              name={contact.name}
+            />
+          )}
+        </ContactModal>
+        <Toaster />
+      </Paper>
+      {/* {isLoading && <Loader />} */}
+    </Box>
   );
 };
 
