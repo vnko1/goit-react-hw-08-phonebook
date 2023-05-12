@@ -11,6 +11,7 @@ import {
   ButtonGroup,
   IconButton,
   Toolbar,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -72,13 +73,15 @@ const PhoneBookAppBar = () => {
           </Box>
           {renderSearchInput && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton
-                aria-label="delete"
-                size="large"
-                onClick={() => setShowAddContact(true)}
-              >
-                <AddBoxIcon fontSize="inherit" color="secondary" />
-              </IconButton>
+              <Tooltip title="Add contact" placement="bottom">
+                <IconButton
+                  aria-label="add"
+                  size="large"
+                  onClick={() => setShowAddContact(true)}
+                >
+                  <AddBoxIcon fontSize="inherit" color="secondary" />
+                </IconButton>
+              </Tooltip>
               <Filter />
             </Box>
           )}
@@ -92,16 +95,17 @@ const PhoneBookAppBar = () => {
             {isLoggedIn && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography component="p">{user.email}</Typography>
-                <IconButton
-                  aria-label="delete"
-                  color="secondary"
-                  sx={{ cursor: 'ponter' }}
-                  onClick={() => {
-                    dispatch(logOut());
-                  }}
-                >
-                  <LogoutIcon />
-                </IconButton>
+                <Tooltip title="Log out" placement="bottom">
+                  <IconButton
+                    aria-label="logout"
+                    color="secondary"
+                    onClick={() => {
+                      dispatch(logOut());
+                    }}
+                  >
+                    <LogoutIcon />
+                  </IconButton>
+                </Tooltip>
               </Box>
             )}
             <Box sx={{ ml: theme.spacing(2) }}>

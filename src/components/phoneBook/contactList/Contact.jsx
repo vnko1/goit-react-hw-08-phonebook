@@ -2,7 +2,13 @@ import PropTypes from 'prop-types';
 
 import { useShowModalContext } from 'context/ContactModalContext';
 import { useDeleteContactMutation } from 'redux/index';
-import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  IconButton,
+  ListItem,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,24 +30,27 @@ export const Contact = ({ name, phone, id }) => {
           {phone}
         </Typography>
       </ListItemText>
-
-      <IconButton
-        aria-label="edit"
-        onClick={() => {
-          setContactId(id);
-          setShowEditContact(true);
-        }}
-      >
-        <EditIcon />
-      </IconButton>
-      <IconButton
-        sx={{ ml: theme => theme.spacing(1) }}
-        aria-label="delete"
-        onClick={() => deleteContacts(id)}
-        disabled={isLoading}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <Tooltip title="Edit contact" placement="bottom">
+        <IconButton
+          aria-label="edit"
+          onClick={() => {
+            setContactId(id);
+            setShowEditContact(true);
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Delete contact" placement="bottom">
+        <IconButton
+          sx={{ ml: theme => theme.spacing(1) }}
+          aria-label="delete"
+          onClick={() => deleteContacts(id)}
+          disabled={isLoading}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
     </ListItem>
   );
 };

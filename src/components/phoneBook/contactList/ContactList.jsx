@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { selectFilter } from 'redux/index';
 import { Contact } from './Contact';
-
 import { Collapse, List, Typography } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
 
