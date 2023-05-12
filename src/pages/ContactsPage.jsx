@@ -17,8 +17,12 @@ const ContactsPage = () => {
   } = useShowModalContext();
 
   useEffect(() => {
-    if (error) toast.error(error);
-  }, [error]);
+    if (isError && error?.originalStatus === 404) {
+      toast.error('Something wrong! Try to reload your');
+      return;
+    }
+    if (isError) toast.error(error);
+  }, [error, isError]);
 
   const contact = useMemo(() => {
     if (data) {
