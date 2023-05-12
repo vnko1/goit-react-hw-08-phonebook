@@ -1,6 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material';
 import { useFetchContactsQuery } from 'redux/index';
 import { useUser } from 'services';
+import { Box, Paper, Typography } from '@mui/material';
 
 const HomePage = () => {
   const { data, isSuccess } = useFetchContactsQuery();

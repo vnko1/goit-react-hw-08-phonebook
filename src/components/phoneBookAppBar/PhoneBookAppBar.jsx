@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logOut } from 'redux/operations';
 import { useUser } from 'services';
+import { setTheme, useLogOutMutation, logOut } from 'redux/index';
+import { useShowModalContext } from 'context/ContactModalContext';
 import { Filter } from 'components/phoneBook';
-import { setTheme } from 'redux/index';
 import AppBar from '@mui/material/AppBar';
 import {
   Box,
@@ -19,7 +19,6 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useShowModalContext } from 'context/ContactModalContext';
 
 const PhoneBookAppBar = () => {
   const { isLoggedIn, user } = useUser();
@@ -27,8 +26,9 @@ const PhoneBookAppBar = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const renderSearchInput = location.pathname.includes('contacts');
   const { setShowAddContact } = useShowModalContext();
+  const [signOut] = useLogOutMutation();
+  const renderSearchInput = location.pathname.includes('contacts');
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -99,7 +99,8 @@ const PhoneBookAppBar = () => {
                   <IconButton
                     aria-label="logout"
                     color="secondary"
-                    onClick={() => {
+                    onClick={async () => {
+                      await signOut();
                       dispatch(logOut());
                     }}
                   >
@@ -110,7 +111,12 @@ const PhoneBookAppBar = () => {
             )}
             <Box sx={{ ml: theme.spacing(2) }}>
               {theme.palette.mode} mode
-              <IconButton onClick={() => dispatch(setTheme())} color="inherit">
+              <IconButton
+                onClick={() => {
+                  dispatch(setTheme());
+                }}
+                color="inherit"
+              >
                 {theme.palette.mode === 'dark' ? (
                   <Brightness7Icon />
                 ) : (

@@ -1,19 +1,16 @@
+import toast, { Toaster } from 'react-hot-toast';
 import { lazy, useEffect, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { refresh } from 'redux/operations';
-import { useUser } from 'services';
-
+import { selectTheme, useCurrentQuery, refresh } from 'redux/index';
+import { getDesignTokens } from 'theme/getDesignToken';
+import ShowModalProvider from 'context/ContactModalContext';
 import SharedLayout from './sharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
-import toast, { Toaster } from 'react-hot-toast';
+import ErrorPage from 'pages/ErrorPage';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { getDesignTokens } from 'theme/getDesignToken';
-import { selectTheme } from 'redux/index';
-import ErrorPage from 'pages/ErrorPage';
-import ShowModalProvider from 'context/ContactModalContext';
 import SimpleBackdrop from './phoneBook/loader/SimpleBackdropLoader';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
@@ -22,17 +19,20 @@ const RegisterPage = lazy(() => import('../pages/RegisterPage'));
 const LogInPage = lazy(() => import('../pages/LogInPage'));
 
 export const App = () => {
-  const { isRefreshing, error, isLoading } = useUser();
   const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
+  const { data, isLoading, isError, isSuccess, error } = useCurrentQuery();
 
   useEffect(() => {
-    if (error && !isLoading) toast.error(error);
-  }, [error, isLoading]);
+    if (isError && error.status !== 401)
+      toast.error('Something wrong. Try to reload your page!');
+  }, [error, isError]);
 
   useEffect(() => {
-    dispatch(refresh());
-  }, [dispatch]);
+    if (isSuccess) {
+      dispatch(refresh(data));
+    }
+  }, [data, dispatch, isSuccess]);
 
   const themeMode = useMemo(() => createTheme(getDesignTokens(theme)), [theme]);
 
@@ -40,36 +40,31 @@ export const App = () => {
     <ShowModalProvider>
       <ThemeProvider theme={themeMode}>
         <CssBaseline>
-          {isRefreshing ? (
-            <SimpleBackdrop isLoading={isRefreshing} />
-          ) : (
-            <>
-              <Routes>
-                <Route path="/" element={<SharedLayout />}>
-                  <Route index element={<HomePage />} />
-                  <Route
-                    path="/contacts"
-                    element={
-                      <PrivateRoute
-                        redirectTo="/login"
-                        component={<ContactsPage />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path="/register"
-                    element={<RestrictedRoute component={<RegisterPage />} />}
+          <Routes>
+            <Route path="/" element={<SharedLayout />}>
+              <Route index element={<HomePage />} />
+              <Route
+                path="/contacts"
+                element={
+                  <PrivateRoute
+                    redirectTo="/login"
+                    component={<ContactsPage />}
                   />
-                  <Route
-                    path="/login"
-                    element={<RestrictedRoute component={<LogInPage />} />}
-                  />
-                  <Route path="*" element={<ErrorPage />} />
-                </Route>
-              </Routes>
-              <Toaster position="bottom-right" reverseOrder={true} />
-            </>
-          )}
+                }
+              ></Route>
+              <Route
+                path="/register"
+                element={<RestrictedRoute component={<RegisterPage />} />}
+              />
+              <Route
+                path="/login"
+                element={<RestrictedRoute component={<LogInPage />} />}
+              />
+              <Route path="*" element={<ErrorPage />} />
+            </Route>
+          </Routes>
+          <Toaster position="bottom-right" reverseOrder={true} />
+          <SimpleBackdrop isLoading={isLoading} />
         </CssBaseline>
       </ThemeProvider>
     </ShowModalProvider>

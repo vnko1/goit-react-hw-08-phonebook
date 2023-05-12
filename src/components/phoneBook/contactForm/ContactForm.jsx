@@ -1,13 +1,13 @@
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
-import { useFetchContactsQuery, useAddContactMutation } from 'redux/index';
-import { submitSchema } from 'services';
 import { useTheme } from '@emotion/react';
-import FetchingLoader from '../loader/FetchingLoader';
-import { useEffect } from 'react';
 import { useShowModalContext } from 'context/ContactModalContext';
+import { useFetchContactsQuery, useAddContactMutation } from 'redux/index';
+import { useEffect } from 'react';
+import { submitSchema } from 'services';
+import FetchingLoader from '../loader/FetchingLoader';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 const ContactForm = () => {
   const { data: contacts } = useFetchContactsQuery();
