@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const RestrictedRoute = ({ component: Component }) => {
   const { isLoggedIn } = useUser();
-  return isLoggedIn ? <Navigate to="/" /> : Component;
+  return isLoggedIn ? <Navigate to="/Contacts" /> : Component;
 };
 
 RestrictedRoute.propTypes = {
