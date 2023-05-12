@@ -12,7 +12,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getDesignTokens } from 'theme/getDesignToken';
 import { selectTheme } from 'redux/index';
-import Error from 'pages/ErrorPage';
+import ErrorPage from 'pages/ErrorPage';
 import ShowModalProvider from 'context/ContactModalContext';
 import SimpleBackdrop from './phoneBook/loader/SimpleBackdropLoader';
 
@@ -64,7 +64,7 @@ export const App = () => {
                     path="/login"
                     element={<RestrictedRoute component={<LogInPage />} />}
                   />
-                  <Route path="*" element={<Error />} />
+                  <Route path="*" element={<ErrorPage />} />
                 </Route>
               </Routes>
               <Toaster position="bottom-right" reverseOrder={true} />
