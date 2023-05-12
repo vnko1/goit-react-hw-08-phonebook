@@ -9,7 +9,7 @@ import { Box, Paper } from '@mui/material';
 import SimpleBackdrop from 'components/phoneBook/loader/SimpleBackdropLoader';
 
 const ContactsPage = () => {
-  const { data, isLoading, isError, error } = useFetchContactsQuery();
+  const { data, isLoading, isError } = useFetchContactsQuery();
 
   const {
     showAddContact,
@@ -20,12 +20,8 @@ const ContactsPage = () => {
   } = useShowModalContext();
 
   useEffect(() => {
-    if (isError && error?.originalStatus === 404) {
-      toast.error('Something wrong! Try to reload your');
-      return;
-    }
-    if (isError) toast.error(error);
-  }, [error, isError]);
+    if (isError) toast.error('Something wrong. Try to reload your page!');
+  }, [isError]);
 
   const contact = useMemo(() => {
     if (data) {

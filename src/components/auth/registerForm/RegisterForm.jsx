@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { register } from 'redux/operations';
-import { useUser } from 'services';
+import { toast } from 'react-hot-toast';
+import { useSignUpMutation, signUp } from 'redux/index';
 import Box from '@mui/material/Box';
-
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import { IconButton, Input, useTheme } from '@mui/material';
@@ -15,17 +14,25 @@ const RegisterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { isLoading } = useUser();
-  const dispatch = useDispatch();
-  const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
+  const [register, { isLoading }] = useSignUpMutation();
+  const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    dispatch(register({ name, email, password }));
+    const response = await register({ name, email, password });
+
     setName('');
     setEmail('');
     setPassword('');
+
+    if (response?.error?.status === 400) {
+      toast.error(response.error.data.message);
+      return;
+    }
+
+    dispatch(signUp(response.data));
   };
 
   return (

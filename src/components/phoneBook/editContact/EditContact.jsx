@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useFormik } from 'formik';
@@ -9,6 +7,8 @@ import { useEditContactMutation } from 'redux/index';
 import { changeSchema, createObj } from 'services';
 import { Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import PhoneIcon from '@mui/icons-material/Phone';
 import css from './EditContact.module.css';
 

@@ -1,7 +1,7 @@
-import { Search, StyledInputBase, SearchIconWrapper } from './Filter.styled';
-import SearchIcon from '@mui/icons-material/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilter, selectFilter } from 'redux/index';
+import { Search, StyledInputBase, SearchIconWrapper } from './Filter.styled';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Filter = () => {
   const filter = useSelector(selectFilter);

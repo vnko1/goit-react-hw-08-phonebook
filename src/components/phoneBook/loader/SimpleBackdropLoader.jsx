@@ -9,7 +9,7 @@ const SimpleBackdrop = ({ isLoading }) => {
         zIndex: theme => theme.zIndex.drawer + 1,
         bgcolor: theme => theme.palette.background.paper,
       }}
-      style={{ opacity: 0.95 }}
+      style={{ opacity: 1 }}
       open={isLoading}
     >
       <CircularProgress color="primary" />

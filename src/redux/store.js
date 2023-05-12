@@ -14,6 +14,7 @@ import { filterReducer } from './filterSlice';
 import { contactsApi } from './contactsApi';
 import { authReducer } from './authSlice';
 import { themeReducer } from './themeSlice';
+import { authApi } from './authApi';
 
 const authPersistConfig = {
   key: 'token',
@@ -36,6 +37,7 @@ export const store = configureStore({
   reducer: {
     auth: authPersistedReducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     filter: filterReducer,
     theme: themePersistReducer,
   },
@@ -46,6 +48,7 @@ export const store = configureStore({
       },
     }),
     contactsApi.middleware,
+    authApi.middleware,
   ],
 });
 

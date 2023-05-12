@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/operations';
+import { signIn, useSignInMutation } from 'redux/index';
+import { toast } from 'react-hot-toast';
 import Box from '@mui/material/Box';
-
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import { useUser } from 'services';
 import { IconButton, Input, useTheme } from '@mui/material';
 import FetchingLoader from 'components/phoneBook/loader/FetchingLoader';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -15,15 +14,24 @@ const LogInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { isLoading } = useUser();
+  const [login, { isLoading }] = useSignInMutation();
+
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    dispatch(logIn({ email, password }));
+    const response = await login({ email, password });
+
     setEmail('');
     setPassword('');
+
+    if (response?.error?.status === 400) {
+      toast.error('Incorrect login or password');
+      return;
+    }
+
+    dispatch(signIn(response.data));
   };
 
   return (
