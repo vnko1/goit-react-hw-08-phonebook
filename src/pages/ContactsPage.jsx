@@ -9,7 +9,8 @@ import { Box, Paper } from '@mui/material';
 import SimpleBackdrop from 'components/phoneBook/loader/SimpleBackdropLoader';
 
 const ContactsPage = () => {
-  const { data, isLoading, isError } = useFetchContactsQuery();
+  const { data, isLoading, isError, isSuccess, error } =
+    useFetchContactsQuery();
 
   const {
     showAddContact,
@@ -20,19 +21,20 @@ const ContactsPage = () => {
   } = useShowModalContext();
 
   useEffect(() => {
-    if (isError) toast.error('Something wrong. Try to reload your page!');
-  }, [isError]);
+    if (isError && error.status !== 401)
+      toast.error(`Something wrong. Try to reload your page! ${error.status}`);
+  }, [error, isError]);
 
   const contact = useMemo(() => {
-    if (data) {
+    if (isSuccess) {
       return data.find(contact => contact.id === contactId);
     }
-  }, [contactId, data]);
+  }, [contactId, data, isSuccess]);
 
   return (
     <Box sx={{ pt: theme => theme.spacing(2) }}>
       <Paper elevation={5} sx={{ p: theme => theme.spacing(4) }}>
-        {!isLoading && <ContactList contacts={data} />}
+        {isSuccess && <ContactList contacts={data} />}
         <ContactModal open={showAddContact} showModal={setShowAddContact}>
           <ContactForm />
         </ContactModal>

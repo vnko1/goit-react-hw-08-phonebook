@@ -25,7 +25,7 @@ export const App = () => {
 
   useEffect(() => {
     if (isError && error.status !== 401)
-      toast.error('Something wrong. Try to reload your page!');
+      toast.error(`Something wrong. Try to reload your page! ${error.status}`);
   }, [error, isError]);
 
   useEffect(() => {
