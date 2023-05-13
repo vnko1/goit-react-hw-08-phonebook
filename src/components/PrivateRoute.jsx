@@ -4,6 +4,7 @@ import { useUser } from 'services';
 
 const PrivateRoute = ({ component: Component, redirectTo = '/' }) => {
   const { isLoggedIn, isRefreshing } = useUser();
+  // const location = useLocation();
 
   return isLoggedIn & !isRefreshing ? Component : <Navigate to={redirectTo} />;
 };
@@ -14,3 +15,5 @@ PrivateRoute.propTypes = {
 };
 
 export default PrivateRoute;
+
+// <Navigate to={redirectTo} state={location} />;
