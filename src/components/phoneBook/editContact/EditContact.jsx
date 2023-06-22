@@ -12,26 +12,26 @@ import Button from '@mui/material/Button';
 import PhoneIcon from '@mui/icons-material/Phone';
 import css from './EditContact.module.css';
 
-const EditContact = ({ contactId, name, number }) => {
+const EditContact = ({ contactId, name, phone }) => {
   const [editContact, { isSuccess, error }] = useEditContactMutation();
   const { setShowEditContact } = useShowModalContext();
 
   const formik = useFormik({
-    initialValues: { name, number },
+    initialValues: { name, phone },
     validationSchema: changeSchema,
     onSubmit: async values => {
-      if (values.name.trim() === '' || values.number.trim() === '') return;
+      if (values.name.trim() === '' || values.phone.trim() === '') return;
 
       const newName = values.name.trim();
-      const newNumber = values.number.trim();
+      const newPhone = values.phone.trim();
 
       await editContact(
         createObj({
           newName,
-          newNumber,
+          newPhone,
           id: contactId,
           name,
-          number,
+          phone,
         })
       );
 
@@ -55,7 +55,7 @@ const EditContact = ({ contactId, name, number }) => {
         </Typography>
         <Typography sx={{ display: 'flex' }} variant="body1">
           <PhoneIcon sx={{ mr: 2 }} />
-          {number}
+          {phone}
         </Typography>
       </div>
       <form onSubmit={formik.handleSubmit}>
@@ -73,16 +73,16 @@ const EditContact = ({ contactId, name, number }) => {
           autoComplete="off"
         />
         <TextField
-          id="number"
+          id="phone"
           label="New phone number"
           variant="outlined"
           sx={{ width: 1, mb: 2 }}
-          name="number"
+          name="phone"
           type="tel"
-          value={formik.values.number}
+          value={formik.values.phone}
           onChange={formik.handleChange}
-          error={formik.touched.number && Boolean(formik.errors.number)}
-          helperText={formik.touched.number && formik.errors.number}
+          error={formik.touched.phone && Boolean(formik.errors.phone)}
+          helperText={formik.touched.phone && formik.errors.phone}
           autoComplete="off"
         />
         <Button
@@ -92,7 +92,7 @@ const EditContact = ({ contactId, name, number }) => {
             bgcolor: theme => theme.palette.secondary.light,
           }}
           type="submit"
-          disabled={!(formik.values.name || formik.values.number)}
+          disabled={!(formik.values.name || formik.values.phone)}
         >
           Save
         </Button>
@@ -104,7 +104,7 @@ const EditContact = ({ contactId, name, number }) => {
 EditContact.propTypes = {
   contactId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
 };
 
 export default EditContact;

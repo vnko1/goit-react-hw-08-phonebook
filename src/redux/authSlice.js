@@ -26,7 +26,7 @@ const authSlice = createSlice({
       state.user = { name: null, email: null, password: null };
     },
     refresh(state, action) {
-      state.user = action.payload;
+      state.user = action.payload.user;
       state.isLoggedIn = true;
     },
   },

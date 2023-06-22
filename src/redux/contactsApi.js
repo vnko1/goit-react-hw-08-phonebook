@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const contactsApi = createApi({
   reducerPath: 'contacts',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://connections-api.herokuapp.com',
+    baseUrl: 'https://frontend-contacts-server.onrender.com/api',
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
 
@@ -18,27 +18,27 @@ export const contactsApi = createApi({
   endpoints: build => ({
     fetchContacts: build.query({
       query: () => '/contacts',
-      providesTags: result =>
-        result
+      providesTags: result => {
+        return result
           ? [
-              ...result.map(({ id }) => ({ type: 'Contacts', id })),
+              ...result.contacts.map(({ id }) => ({ type: 'Contacts', id })),
               { type: 'Contacts', id: 'LIST' },
             ]
-          : [{ type: 'Contacts', id: 'LIST' }],
+          : [{ type: 'Contacts', id: 'LIST' }];
+      },
     }),
     addContact: build.mutation({
       query: contact => {
-        console.log(contact);
         return { url: '/contacts', method: 'POST', body: contact };
       },
       invalidatesTags: [{ type: 'Contacts', id: 'LIST' }],
     }),
     editContact: build.mutation({
-      query: ({ id, name, number, email }) => {
+      query: ({ id, name, phone, email }) => {
         return {
           url: `/contacts/${id}`,
-          method: 'PATCH',
-          body: { name, number, email },
+          method: 'PUT',
+          body: { name, phone, email },
         };
       },
       invalidatesTags: [{ type: 'Contacts', id: 'LIST' }],

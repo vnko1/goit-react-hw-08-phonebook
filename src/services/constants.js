@@ -9,7 +9,7 @@ const submitSchema = Yup.object().shape({
         "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan'",
     })
     .required('Required'),
-  number: Yup.string()
+  phone: Yup.string()
     .min(7, 'Too Short!')
     .max(20, 'Too Long!')
     .matches(
@@ -36,7 +36,7 @@ const changeSchema = Yup.object().shape({
         "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan'",
     }),
 
-  number: Yup.string()
+  phone: Yup.string()
     .min(7, 'Too Short!')
     .max(20, 'Too Long!')
     .matches(

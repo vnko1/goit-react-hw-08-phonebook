@@ -27,14 +27,14 @@ const ContactsPage = () => {
 
   const contact = useMemo(() => {
     if (isSuccess) {
-      return data.find(contact => contact.id === contactId);
+      return data.contacts.find(contact => contact.id === contactId);
     }
   }, [contactId, data, isSuccess]);
 
   return (
     <Box sx={{ pt: theme => theme.spacing(2) }}>
       <Paper elevation={5} sx={{ p: theme => theme.spacing(4) }}>
-        {isSuccess && <ContactList contacts={data} />}
+        {isSuccess && <ContactList contacts={data.contacts} />}
         <ContactModal open={showAddContact} showModal={setShowAddContact}>
           <ContactForm />
         </ContactModal>
@@ -42,7 +42,7 @@ const ContactsPage = () => {
           {!!contact && (
             <EditContact
               contactId={contact.id}
-              number={contact.number}
+              phone={contact.phone}
               name={contact.name}
             />
           )}
