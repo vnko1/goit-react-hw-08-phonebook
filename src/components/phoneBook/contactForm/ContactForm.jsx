@@ -16,7 +16,7 @@ const ContactForm = () => {
   const { setShowAddContact } = useShowModalContext();
 
   const formik = useFormik({
-    initialValues: { name: '', number: '' },
+    initialValues: { name: '', number: '', email: '' },
     validationSchema: submitSchema,
     onSubmit: async values => {
       const isIncluded = contacts.some(
@@ -32,6 +32,7 @@ const ContactForm = () => {
       await addContacts({
         name: values.name.trim(),
         number: values.number.trim(),
+        email: values.email.trim(),
       });
       setShowAddContact(false);
       formik.resetForm();
@@ -68,6 +69,19 @@ const ContactForm = () => {
         onChange={formik.handleChange}
         error={formik.touched.number && Boolean(formik.errors.number)}
         helperText={formik.touched.number && formik.errors.number}
+        autoComplete="off"
+      />
+      <TextField
+        id="email"
+        label="Email"
+        variant="outlined"
+        sx={{ width: 1, mb: 2 }}
+        name="email"
+        type="email"
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
         autoComplete="off"
       />
       <Button

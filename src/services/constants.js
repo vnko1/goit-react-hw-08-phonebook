@@ -20,6 +20,11 @@ const submitSchema = Yup.object().shape({
       }
     )
     .required('Required'),
+  email: Yup.string()
+    .matches(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/, {
+      message: 'Email must have @',
+    })
+    .required('Required'),
 });
 
 const changeSchema = Yup.object().shape({
@@ -41,6 +46,11 @@ const changeSchema = Yup.object().shape({
           'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +',
       }
     ),
+  email: Yup.string()
+    .matches(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/, {
+      message: 'Email must have @',
+    })
+    .required('Required'),
 });
 
 export { submitSchema, changeSchema };

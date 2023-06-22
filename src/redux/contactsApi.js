@@ -27,15 +27,18 @@ export const contactsApi = createApi({
           : [{ type: 'Contacts', id: 'LIST' }],
     }),
     addContact: build.mutation({
-      query: contact => ({ url: '/contacts', method: 'POST', body: contact }),
+      query: contact => {
+        console.log(contact);
+        return { url: '/contacts', method: 'POST', body: contact };
+      },
       invalidatesTags: [{ type: 'Contacts', id: 'LIST' }],
     }),
     editContact: build.mutation({
-      query: ({ id, name, number }) => {
+      query: ({ id, name, number, email }) => {
         return {
           url: `/contacts/${id}`,
           method: 'PATCH',
-          body: { name, number },
+          body: { name, number, email },
         };
       },
       invalidatesTags: [{ type: 'Contacts', id: 'LIST' }],

@@ -14,7 +14,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-export const Contact = ({ name, phone, id }) => {
+export const Contact = ({ name, phone, email, id }) => {
   const [deleteContacts, { isLoading }] = useDeleteContactMutation();
   const { setContactId, setShowEditContact } = useShowModalContext();
 
@@ -28,6 +28,10 @@ export const Contact = ({ name, phone, id }) => {
         <Typography sx={{ display: 'flex' }} variant="body1">
           <PhoneIcon sx={{ mr: 2 }} />
           {phone}
+        </Typography>
+        <Typography sx={{ display: 'flex' }} variant="body1">
+          <PhoneIcon sx={{ mr: 2 }} />
+          {email}
         </Typography>
       </ListItemText>
       <Tooltip title="Edit contact" placement="bottom">
@@ -58,5 +62,6 @@ export const Contact = ({ name, phone, id }) => {
 Contact.propTypes = {
   name: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };

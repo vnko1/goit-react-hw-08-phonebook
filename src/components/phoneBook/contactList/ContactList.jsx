@@ -15,7 +15,8 @@ const ContactList = ({ contacts }) => {
       contacts.filter(
         contact =>
           contact.number.toLowerCase().includes(filter.toLowerCase()) ||
-          contact.name.toLowerCase().includes(filter.toLowerCase())
+          contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+          contact.email.toLowerCase().includes(filter.toLowerCase())
       ),
     [contacts, filter]
   );
@@ -31,10 +32,10 @@ const ContactList = ({ contacts }) => {
       )}
       <List>
         <TransitionGroup>
-          {filtredContacts.map(({ id, name, number }) => {
+          {filtredContacts.map(({ id, name, number, email }) => {
             return (
               <Collapse key={id}>
-                <Contact name={name} phone={number} id={id} />
+                <Contact name={name} phone={number} email={email} id={id} />
               </Collapse>
             );
           })}
