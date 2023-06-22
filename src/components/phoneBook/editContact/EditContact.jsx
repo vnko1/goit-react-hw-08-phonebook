@@ -20,6 +20,7 @@ const EditContact = ({ contactId, name, phone }) => {
     initialValues: { name, phone },
     validationSchema: changeSchema,
     onSubmit: async values => {
+      console.log(1);
       if (values.name.trim() === '' || values.phone.trim() === '') return;
 
       const newName = values.name.trim();

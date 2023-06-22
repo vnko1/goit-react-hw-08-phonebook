@@ -20,7 +20,7 @@ const HomePage = () => {
         )}
         {isLoggedIn && isSuccess && (
           <Typography variant="h1">
-            You have {data.length} contacts in your phonebook
+            You have {data.contacts.length} contacts in your phonebook
           </Typography>
         )}
       </Paper>

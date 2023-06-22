@@ -19,7 +19,7 @@ export const contactsApi = createApi({
     fetchContacts: build.query({
       query: () => '/contacts',
       providesTags: result => {
-        return result
+        return result.contacts
           ? [
               ...result.contacts.map(({ id }) => ({ type: 'Contacts', id })),
               { type: 'Contacts', id: 'LIST' },
@@ -45,7 +45,10 @@ export const contactsApi = createApi({
     }),
     deleteContact: build.mutation({
       query: id => ({ url: `/contacts/${id}`, method: 'DELETE' }),
-      invalidatesTags: (result, error, id) => [{ type: 'Contacts', id }],
+      invalidatesTags: (result, error, id) => {
+        console.log(id);
+        return [{ type: 'Contacts', id }];
+      },
     }),
   }),
 });
