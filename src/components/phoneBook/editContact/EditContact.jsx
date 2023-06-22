@@ -10,29 +10,37 @@ import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
 import css from './EditContact.module.css';
 
-const EditContact = ({ contactId, name, phone }) => {
+const EditContact = ({ contactId, name, phone, email }) => {
   const [editContact, { isSuccess, error }] = useEditContactMutation();
   const { setShowEditContact } = useShowModalContext();
 
   const formik = useFormik({
-    initialValues: { name, phone },
+    initialValues: { name, phone, email },
     validationSchema: changeSchema,
     onSubmit: async values => {
-      console.log(1);
-      if (values.name.trim() === '' || values.phone.trim() === '') return;
+      if (
+        values.name.trim() === '' ||
+        values.phone.trim() === '' ||
+        values.email.trim() === ''
+      )
+        return;
 
       const newName = values.name.trim();
       const newPhone = values.phone.trim();
+      const newEmail = values.email.trim();
 
       await editContact(
         createObj({
           newName,
           newPhone,
+          newEmail,
           id: contactId,
           name,
           phone,
+          email,
         })
       );
 
@@ -57,6 +65,10 @@ const EditContact = ({ contactId, name, phone }) => {
         <Typography sx={{ display: 'flex' }} variant="body1">
           <PhoneIcon sx={{ mr: 2 }} />
           {phone}
+        </Typography>
+        <Typography sx={{ display: 'flex' }} variant="body1">
+          <EmailIcon sx={{ mr: 2 }} />
+          {email}
         </Typography>
       </div>
       <form onSubmit={formik.handleSubmit}>
@@ -86,6 +98,19 @@ const EditContact = ({ contactId, name, phone }) => {
           helperText={formik.touched.phone && formik.errors.phone}
           autoComplete="off"
         />
+        <TextField
+          id="email"
+          label="New email number"
+          variant="outlined"
+          sx={{ width: 1, mb: 2 }}
+          name="email"
+          type="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+          autoComplete="off"
+        />
         <Button
           sx={{
             width: 1,
@@ -93,7 +118,9 @@ const EditContact = ({ contactId, name, phone }) => {
             bgcolor: theme => theme.palette.secondary.light,
           }}
           type="submit"
-          disabled={!(formik.values.name || formik.values.phone)}
+          disabled={
+            !(formik.values.name || formik.values.phone || formik.values.email)
+          }
         >
           Save
         </Button>

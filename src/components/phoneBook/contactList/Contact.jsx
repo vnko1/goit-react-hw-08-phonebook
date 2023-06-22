@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -30,7 +31,7 @@ export const Contact = ({ name, phone, email, id }) => {
           {phone}
         </Typography>
         <Typography sx={{ display: 'flex' }} variant="body1">
-          <PhoneIcon sx={{ mr: 2 }} />
+          <EmailIcon sx={{ mr: 2 }} />
           {email}
         </Typography>
       </ListItemText>
