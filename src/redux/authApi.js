@@ -30,7 +30,7 @@ export const authApi = createApi({
         return { url: '/users/logout', method: 'POST' };
       },
     }),
-    current: build.query({
+    current: build.mutation({
       query: () => {
         return { url: '/users/current', method: 'POST' };
       },
@@ -41,5 +41,5 @@ export const {
   useSignUpMutation,
   useSignInMutation,
   useLogOutMutation,
-  useCurrentQuery,
+  useCurrentMutation,
 } = authApi;

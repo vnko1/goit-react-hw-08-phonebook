@@ -2,7 +2,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { lazy, useEffect, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTheme, useCurrentQuery, refresh } from 'redux/index';
+import { selectTheme, useCurrentMutation, refresh } from 'redux/index';
 import { getDesignTokens } from 'theme/getDesignToken';
 import ShowModalProvider from 'context/ContactModalContext';
 import SharedLayout from './sharedLayout/SharedLayout';
@@ -12,6 +12,7 @@ import ErrorPage from 'pages/ErrorPage';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import SimpleBackdrop from './phoneBook/loader/SimpleBackdropLoader';
+import { useUser } from 'services';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ContactsPage = lazy(() => import('../pages/ContactsPage'));
@@ -20,8 +21,9 @@ const LogInPage = lazy(() => import('../pages/LogInPage'));
 
 export const App = () => {
   const theme = useSelector(selectTheme);
+  const { token } = useUser();
   const dispatch = useDispatch();
-  const { data, isLoading, isError, isSuccess, error } = useCurrentQuery();
+  const [refreshStatus, { isLoading, isError, error }] = useCurrentMutation();
 
   useEffect(() => {
     if (isError && error.status !== 401)
@@ -29,10 +31,13 @@ export const App = () => {
   }, [error, isError]);
 
   useEffect(() => {
-    if (isSuccess) {
-      dispatch(refresh(data));
-    }
-  }, [data, dispatch, isSuccess]);
+    (async () => {
+      if (token) {
+        const { data } = await refreshStatus();
+        if (!isError) dispatch(refresh(data));
+      }
+    })();
+  }, [dispatch, isError, refreshStatus, token]);
 
   const themeMode = useMemo(() => createTheme(getDesignTokens(theme)), [theme]);
 

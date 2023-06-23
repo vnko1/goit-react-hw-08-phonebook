@@ -22,6 +22,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const PhoneBookAppBar = () => {
   const { isLoggedIn, user } = useUser();
+
   const theme = useTheme();
   const navigation = useNavigate();
   const dispatch = useDispatch();
