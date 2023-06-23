@@ -20,7 +20,7 @@ export const Contact = ({ name, phone, email, id }) => {
   const { setContactId, setShowEditContact } = useShowModalContext();
 
   return (
-    <ListItem>
+    <ListItem sx={{ borderRadius: 5, mb: 1, bgcolor: 'aliceblue' }}>
       <ListItemText>
         <Typography sx={{ display: 'flex', mb: 1 }} variant="body1">
           <PersonIcon sx={{ mr: 2 }} />
