@@ -14,26 +14,18 @@ export const authApi = createApi({
   }),
   endpoints: build => ({
     signUp: build.mutation({
-      query: user => {
-        return { url: '/users/register', method: 'POST', body: user };
-      },
+      query: user => ({ url: '/users/register', method: 'POST', body: user }),
     }),
 
     signIn: build.mutation({
-      query: user => {
-        return { url: '/users/login', method: 'POST', body: user };
-      },
+      query: user => ({ url: '/users/login', method: 'POST', body: user }),
     }),
 
     logOut: build.mutation({
-      query: () => {
-        return { url: '/users/logout', method: 'POST' };
-      },
+      query: () => ({ url: '/users/logout', method: 'POST' }),
     }),
     current: build.mutation({
-      query: () => {
-        return { url: '/users/current', method: 'POST' };
-      },
+      query: () => ({ url: '/users/current', method: 'POST' }),
     }),
   }),
 });
